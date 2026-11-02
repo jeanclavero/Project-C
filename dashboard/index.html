@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project C — Business Dashboard</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #171a23;
+    --border: #262b38;
+    --text: #e8eaf0;
+    --muted: #8a91a3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  header { margin-bottom: 2rem; }
+  h1 { font-size: 1.6rem; letter-spacing: 0.02em; }
+  .subtitle { color: var(--muted); margin-top: 0.4rem; font-size: 0.95rem; }
+  .summary {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .summary-card {
+    flex: 1 1 160px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .summary-card .num { font-size: 1.5rem; font-weight: 600; }
+  .summary-card .lbl { color: var(--muted); font-size: 0.8rem; margin-top: 0.25rem; }
+  .category {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .cat-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+  .cat-name { font-weight: 600; font-size: 1rem; }
+  .cat-status { font-size: 0.8rem; color: var(--muted); }
+  .cat-status.active { color: #d4a017; }
+  .bar {
+    position: relative;
+    height: 18px;
+    background: #0a0c10;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 9px;
+    width: 0;
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .bar-fill.empty { width: 0; }
+  .cat-note { color: var(--muted); font-size: 0.8rem; margin-top: 0.4rem; }
+  footer { margin-top: 2rem; color: var(--muted); font-size: 0.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Project C — Business Dashboard</h1>
+    <p class="subtitle">Life bars for each area of the business. 100% = fully set up and running.</p>
+  </header>
+
+  <div class="summary">
+    <div class="summary-card">
+      <div class="num" id="sum-avg">0%</div>
+      <div class="lbl">Overall health</div>
+    </div>
+    <div class="summary-card">
+      <div class="num" id="sum-started">0 / 9</div>
+      <div class="lbl">Categories started</div>
+    </div>
+    <div class="summary-card">
+      <div class="num" id="sum-empty">9</div>
+      <div class="lbl">Not yet set up</div>
+    </div>
+  </div>
+
+  <div id="categories"></div>
+
+  <footer>Data source: dashboard/index.html — edit the CATEGORIES list to update values. Last updated: <span id="last-updated"></span></footer>
+</div>
+
+<script>
+  // Edit this list to change the dashboard. value: 0-100.
+  const CATEGORIES = [
+    { name: "Finance & Accounting",     value: 0,  note: "No bookkeeping, invoicing, or banking set up yet." },
+    { name: "Sales & Customers",        value: 0,  note: "No pipeline, CRM, or first customers yet." },
+    { name: "Service Delivery",         value: 0,  note: "No offering defined or delivered yet." },
+    { name: "Legal & Regulatory",       value: 0,  note: "No legal structure, contracts, or compliance yet." },
+    { name: "Operations & Processes",   value: 0,  note: "No repeatable processes defined yet." },
+    { name: "Tech & Software",          value: 10, note: "Project C workspace set up with AI assistant tooling." },
+    { name: "HR",                       value: 0,  note: "No hiring, contracts, or policies yet." },
+    { name: "Marketing & Brand",        value: 0,  note: "No brand, website, or channels yet." },
+    { name: "Physical Assets",          value: 0,  note: "No equipment or premises needed yet." },
+  ];
+
+  const LAST_UPDATED = "2026-11-02";
+
+  function colorFor(value) {
+    if (value <= 0)  return "#3a3f4d";   // grey: dormant
+    if (value < 25) return "#d9534f";    // red: critical
+    if (value < 50) return "#d4a017";    // amber: weak
+    if (value < 75) return "#5bb85b";    // green: healthy
+    return "#35c3ed";                   // blue: strong
+  }
+
+  function statusLabel(value) {
+    if (value <= 0)  return "NOT SET UP";
+    if (value < 25)  return "CRITICAL";
+    if (value < 50)  return "WEAK";
+    if (value < 75)  return "HEALTHY";
+    return "STRONG";
+  }
+
+  const container = document.getElementById("categories");
+  CATEGORIES.forEach(cat => {
+    const el = document.createElement("div");
+    el.className = "category";
+    el.innerHTML = `
+      <div class="cat-head">
+        <span class="cat-name">${cat.name}</span>
+        <span class="cat-status ${cat.value > 0 ? "active" : ""}">${statusLabel(cat.value)} · ${cat.value}%</span>
+      </div>
+      <div class="bar"><div class="bar-fill" style="background:${colorFor(cat.value)}"></div></div>
+      <div class="cat-note">${cat.note}</div>
+    `;
+    container.appendChild(el);
+    requestAnimationFrame(() => {
+      setTimeout(() => { el.querySelector(".bar-fill").style.width = cat.value + "%"; }, 50);
+    });
+  });
+
+  const avg = Math.round(CATEGORIES.reduce((s, c) => s + c.value, 0) / CATEGORIES.length);
+  const started = CATEGORIES.filter(c => c.value > 0).length;
+  document.getElementById("sum-avg").textContent = avg + "%";
+  document.getElementById("sum-started").textContent = started + " / " + CATEGORIES.length;
+  document.getElementById("sum-empty").textContent = CATEGORIES.length - started;
+  document.getElementById("last-updated").textContent = LAST_UPDATED;
+</script>
+</body>
+</html>
