@@ -143,15 +143,37 @@
   .dancer .status { font-size: 0.72rem; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.15rem; }
   .dancer .status.active { color: var(--purple); }
   .dancer .note { color: var(--muted); font-size: 0.78rem; font-style: italic; margin-top: 0.5rem; }
-  .dancer.wide {
-    grid-column: 1 / -1;
-    display: flex;
-    gap: 1.75rem;
-    align-items: flex-start;
+  .dancer { cursor: pointer; }
+  .detail-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.75rem 2rem 2rem;
+    margin-top: 1.25rem;
+    box-shadow: 0 4px 14px rgba(120, 95, 70, 0.08);
     text-align: left;
   }
-  .dancer.wide .disc { margin: 0; flex: 0 0 108px; }
-  .dancer.wide .body { flex: 1; }
+  #detail:empty { display: none; }
+  .back-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-bottom: 1.1rem;
+    color: var(--purple);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .back-btn:hover { color: #6d4a9e; }
+  .detail-head {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .detail-head .disc { margin: 0; flex: 0 0 108px; }
+  .detail-head .body { flex: 1; }
   .checklist { margin-top: 0.85rem; }
   .checklist li {
     list-style: none;
@@ -273,14 +295,7 @@
   <div class="act">Act II · The Dances</div>
   <div class="company" id="categories"></div>
 
-  <div class="act">Act III · The Venue Hunt — premises + running dance business in Central Madrid</div>
-  <p class="subtitle" style="margin-bottom: 1.25rem;">Objective: buy the local and the existing business (teachers, students, licences, brand) together as one autonomous economic unit. Indicative prices (researched 2026-11-02): Centro locals ~2,000-4,000 €/m² with the average local at ~158 m² (Salamanca prime above 4,700 €/m²); dance-academy traspasos in the Madrid region have ranged 25,000-130,000 €. All links below lead to specific offers; verify each is still active before acting on it.</p>
-
-  <div class="subact">Locals for sale — the premises</div>
-  <div class="options" id="local-options"></div>
-
-  <div class="subact">Traspasos — businesses for sale</div>
-  <div class="options" id="traspaso-options"></div>
+  <div id="detail"></div>
 
   <footer>
     <p class="quote">"Every performance begins at the barre."</p>
@@ -294,7 +309,7 @@
     { name: "Finance & Accounting",     value: 0,  note: "No bookkeeping, invoicing, or banking set up yet." },
     { name: "Sales & Customers",        value: 0,  note: "No pipeline, CRM, or first customers yet." },
     { name: "Service Delivery",         value: 0,  note: "No offering defined or delivered yet." },
-    { name: "Legal & Regulatory",       value: 5,  note: "Deal structure for buying premises + running business defined. Checklist below — confirm with a Spanish lawyer before signing.", checklist: [
+    { name: "Legal & Regulatory",       value: 5,  note: "Deal structure for buying premises + running business defined — open this category for the checklist. Confirm with a Spanish lawyer before signing.", checklist: [
       { t: "Two simultaneous agreements", d: "Compraventa of the premises: escritura publica before a notary and inscription in the Registro de la Propiedad. Acquisition of the business: municipal licences, brand, client list, staff, furniture and stock. Usually negotiated as one integrated process." },
       { t: "Opening & activity licence", d: "Confirm all municipal licences are valid and up to date with current regulations; file the cambio de titularidad (licence ownership change) at the Ayuntamiento when signing." },
       { t: "Hidden debts — sucesión de empresa", d: "Acquiring a live economic unit can inherit labour obligations (contracted staff) and fiscal liabilities of the previous owner. Run due diligence beforehand and sign exoneration clauses for past debts." },
@@ -304,7 +319,7 @@
     { name: "Tech & Software",          value: 10, note: "Project C workspace set up with AI assistant tooling." },
     { name: "HR",                       value: 0,  note: "No hiring, contracts, or policies yet." },
     { name: "Marketing & Brand",        value: 0,  note: "No brand, website, or channels yet." },
-    { name: "Physical Assets",          value: 5,  note: "Hunting a local plus running dance business in Central Madrid, as one packaged deal — see Act III." },
+    { name: "Physical Assets",          value: 5,  venue: true, note: "Venue hunt underway: locals for sale and traspasos in Central Madrid, with prices — open this category for the options.", venueIntro: "Objective: buy the local and the existing business (teachers, students, licences, brand) together as one autonomous economic unit. Indicative prices (researched 2026-11-02): Centro locals ~2,000-4,000 €/m² with the average local at ~158 m² (Salamanca prime above 4,700 €/m²); dance-academy traspasos in the Madrid region have ranged 25,000-130,000 €. All links lead to specific offers; verify each is still active." },
   ];
 
   const LAST_UPDATED = "2026-11-02";
@@ -418,6 +433,7 @@
       }, 60));
     }
 
+    g.addEventListener("click", () => openDetail(i));
     g.addEventListener("mouseenter", () => {
       setCenter(cat.name, cat.value + "%", statusLabel(cat.value));
       const card = document.getElementById("cat-" + i);
@@ -441,27 +457,19 @@
     const el = document.createElement("div");
     el.className = "dancer";
     el.id = "cat-" + i;
-    const discHTML = `
+    el.setAttribute("role", "button");
+    el.setAttribute("tabindex", "0");
+    el.innerHTML = `
       <div class="disc" style="--c:${colorFor(cat.value)}">
         <span class="num">${cat.value}%</span>
-      </div>`;
-    if (Array.isArray(cat.checklist)) {
-      el.classList.add("wide");
-      el.innerHTML = `${discHTML}
-        <div class="body">
-          <div class="name">${cat.name}</div>
-          <div class="status ${cat.value > 0 ? "active" : ""}">${statusLabel(cat.value)}</div>
-          <div class="note">${cat.note}</div>
-          <ul class="checklist">
-            ${cat.checklist.map(it => `<li><strong>${it.t}</strong> — ${it.d}</li>`).join("")}
-          </ul>
-        </div>`;
-    } else {
-      el.innerHTML = `${discHTML}
-        <div class="name">${cat.name}</div>
-        <div class="status ${cat.value > 0 ? "active" : ""}">${statusLabel(cat.value)}</div>
-        <div class="note">${cat.note}</div>`;
-    }
+      </div>
+      <div class="name">${cat.name}</div>
+      <div class="status ${cat.value > 0 ? "active" : ""}">${statusLabel(cat.value)}</div>
+      <div class="note">${cat.note}</div>`;
+    el.addEventListener("click", () => openDetail(i));
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDetail(i); }
+    });
     container.appendChild(el);
     requestAnimationFrame(() => setTimeout(() => {
       el.querySelector(".disc").style.setProperty("--p", cat.value);
@@ -473,7 +481,59 @@
   document.getElementById("sum-empty").textContent = CATEGORIES.length - started;
   document.getElementById("last-updated").textContent = LAST_UPDATED;
 
-  // --- Act III: the venue hunt ---
+  // --- Category detail views ---
+  const detailBox = document.getElementById("detail");
+
+  function closeDetail() {
+    detailBox.innerHTML = "";
+    document.getElementById("categories").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function openDetail(i) {
+    const cat = CATEGORIES[i];
+    let extra = "";
+    if (Array.isArray(cat.checklist)) {
+      extra = `
+        <div class="subact">Deal structure — buying premises + business</div>
+        <ul class="checklist">
+          ${cat.checklist.map(it => `<li><strong>${it.t}</strong> — ${it.d}</li>`).join("")}
+        </ul>`;
+    } else if (cat.venue) {
+      extra = `
+        <p class="subtitle" style="text-align: left; margin-bottom: 1.25rem;">${cat.venueIntro}</p>
+        <div class="subact">Locals for sale — the premises</div>
+        <div class="options" id="local-options"></div>
+        <div class="subact">Traspasos — businesses for sale</div>
+        <div class="options" id="traspaso-options"></div>`;
+    } else {
+      extra = `<p class="subtitle" style="text-align: left;">No further information yet — this category is still at the barre.</p>`;
+    }
+    detailBox.innerHTML = `
+      <div class="detail-card">
+        <button class="back-btn" id="back-btn">&larr; Back to the company</button>
+        <div class="detail-head">
+          <div class="disc" style="--c:${colorFor(cat.value)}">
+            <span class="num">${cat.value}%</span>
+          </div>
+          <div class="body">
+            <div class="name" style="font-size: 1.1rem;">${cat.name}</div>
+            <div class="status ${cat.value > 0 ? "active" : ""}">${statusLabel(cat.value)}</div>
+            <div class="note">${cat.note}</div>
+          </div>
+        </div>
+        ${extra}
+      </div>`;
+    document.getElementById("back-btn").addEventListener("click", closeDetail);
+    if (cat.venue) {
+      renderOptions("local-options", LOCALS);
+      renderOptions("traspaso-options", TRASPASOS);
+    }
+    requestAnimationFrame(() => setTimeout(() => {
+      detailBox.querySelector(".disc").style.setProperty("--p", cat.value);
+    }, 60));
+    detailBox.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   function renderOptions(boxId, list) {
     const box = document.getElementById(boxId);
     list.forEach(opt => {
@@ -489,8 +549,6 @@
       box.appendChild(el);
     });
   }
-  renderOptions("local-options", LOCALS);
-  renderOptions("traspaso-options", TRASPASOS);
 </script>
 </body>
 </html>

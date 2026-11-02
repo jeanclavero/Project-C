@@ -14,9 +14,12 @@ Milanuncios listings from Spain, shortlist, and engage a Spanish lawyer.
 
 ## Dashboard
 dashboard/index.html tracks life bars (0-100%) for nine business
-categories. All at 0% (nothing set up) except Tech & Software at 10%
-(Project C workspace + AI assistant tooling in place). Edit the
-CATEGORIES list at the top of the file's script to update values.
+categories. Values: Tech & Software 10, Legal & Regulatory 5,
+Physical Assets 5, rest 0. Category cards and ring segments open a
+detail view: Legal holds the premises-plus-business deal checklist;
+Physical Assets holds the venue hunt (locals for sale + traspasos,
+each a specific listing with prices). Edit the CATEGORIES list in
+the script to update values.
 
 ## Notes for the next session
 (none yet)
