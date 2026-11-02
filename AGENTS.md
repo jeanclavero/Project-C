@@ -14,4 +14,9 @@ You are working with Jean on "Project C". Follow this file before anything else.
    - BUSINESS/status.md (new current state + next steps)
    - BUSINESS/decisions.md (any decision made: date, decision, rationale)
 6. Commit messages: imperative, one line, e.g. "Update status: market scan done".
-7. Write files in plain Markdown. No vendor-specific formats. No secrets.
+7. Git cadence: commit and push once every FIVE user requests, not after every
+   request. Accumulate the changes from the last five requests and batch them
+   into a single commit+push on the fifth request. Do not commit or push on
+   requests 1-4 of a batch. (This batch rule does not override rule 5: still
+   propose status/decisions updates in the session where the work happened.)
+8. Write files in plain Markdown. No vendor-specific formats. No secrets.

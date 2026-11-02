@@ -196,43 +196,109 @@
   }
   .checklist strong { color: var(--text); font-weight: 600; }
 
-  .options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1rem;
-  }
-  .option {
-    background: var(--card);
+  .pills { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1rem; }
+  .pill {
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.1rem 1.25rem;
-    box-shadow: 0 4px 14px rgba(120, 95, 70, 0.08);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-  .option:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(120, 95, 70, 0.14); }
-  .option .tag {
-    display: inline-block;
-    font-size: 0.66rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--purple);
-    border: 1px solid var(--purple);
+    background: #fffdf9;
     border-radius: 999px;
-    padding: 0.15rem 0.6rem;
-    margin-bottom: 0.6rem;
+    padding: 0.32rem 0.85rem;
+    font-size: 0.8rem;
+    color: var(--text);
+    font-family: inherit;
+    cursor: pointer;
   }
-  .option .opt-name { font-weight: 600; font-size: 0.95rem; line-height: 1.35; }
-  .option .opt-desc { color: var(--muted); font-size: 0.82rem; margin-top: 0.4rem; }
-  .option .opt-price { color: var(--brown); font-size: 0.85rem; font-weight: 600; margin-top: 0.5rem; }
-  .option a {
-    display: inline-block;
-    margin-top: 0.7rem;
-    color: var(--purple);
+  .pill.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .xp-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem 2rem;
+    align-items: center;
+    margin-bottom: 1.25rem;
     font-size: 0.85rem;
-    text-decoration: none;
-    border-bottom: 1px dotted var(--purple);
+    color: var(--muted);
   }
-  .option a:hover { color: #6d4a9e; }
+  .xp-inputs input[type="range"] { accent-color: var(--purple); width: 190px; vertical-align: middle; }
+  .xp-inputs input[type="number"] {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.3rem 0.5rem;
+    width: 120px;
+    font-family: inherit;
+    color: var(--text);
+    background: #fffdf9;
+  }
+  .xbar { position: relative; height: 14px; background: rgba(24, 18, 26, 0.08); border-radius: 7px; margin: 0.35rem 0 0.95rem; }
+  .xbar .seg { position: absolute; top: 0; height: 100%; border-radius: 7px; opacity: 0.85; }
+  .xbar .marker { position: absolute; top: -4px; width: 2px; height: 22px; background: var(--brown); }
+  .xbar-label { font-size: 0.82rem; color: var(--text); }
+  .xbar-scale { font-size: 0.72rem; color: var(--muted); margin-top: -0.65rem; margin-bottom: 0.9rem; }
+  .range-row {
+    display: grid;
+    grid-template-columns: 185px 1fr;
+    gap: 0.85rem;
+    align-items: center;
+    padding: 0.3rem 0.45rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.82rem;
+  }
+  .range-row:hover { background: rgba(123, 90, 167, 0.06); }
+  .range-row.selected { background: rgba(123, 90, 167, 0.13); }
+  .range-row .rname { color: var(--text); }
+  .toggle-btn {
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: var(--muted);
+    font-family: inherit;
+    margin-right: 0.4rem;
+  }
+  .toggle-btn.active { border-color: var(--purple); color: var(--purple); }
+  .platforms { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem; }
+  .platform {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.7rem 0.95rem;
+    font-size: 0.85rem;
+    background: #fffdf9;
+    text-align: left;
+  }
+  .platform a { color: var(--purple); text-decoration: none; }
+  .platform a:hover { text-decoration: underline; }
+  .platform .pl-note { color: var(--muted); font-size: 0.75rem; margin-top: 0.15rem; }
+  .reco {
+    background: rgba(123, 90, 167, 0.07);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.3rem;
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+  .reco strong { color: var(--purple); }
+  .fin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1.25rem; }
+  .fin-table td { padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); }
+  .fin-table td.amt { text-align: right; white-space: nowrap; color: var(--brown); font-weight: 600; }
+  .fin-table tr.section td {
+    color: var(--purple);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    border-bottom: none;
+    padding-bottom: 0.15rem;
+  }
+  .fin-table tr.sub td { color: var(--muted); border-bottom: 1px solid var(--border); }
+  .fin-table tr.total td {
+    border-top: 2px solid var(--purple);
+    border-bottom: none;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .fin-table tr.total td.amt { color: var(--purple); }
+  .fin-note { font-size: 0.75rem; color: var(--muted); font-style: italic; margin: -0.5rem 0 1.25rem; }
   .subact {
     display: flex;
     align-items: center;
@@ -306,7 +372,7 @@
 <script>
   // Edit this list to change the dashboard. value: 0-100.
   const CATEGORIES = [
-    { name: "Finance & Accounting",     value: 0,  note: "No bookkeeping, invoicing, or banking set up yet." },
+    { name: "Finance & Accounting",     value: 10, finance: true, note: "Initial cost plan and two-loan financing model for an 80 m² studio in La Latina — open this category." },
     { name: "Sales & Customers",        value: 0,  note: "No pipeline, CRM, or first customers yet." },
     { name: "Service Delivery",         value: 0,  note: "No offering defined or delivered yet." },
     { name: "Legal & Regulatory",       value: 5,  note: "Deal structure for buying premises + running business defined — open this category for the checklist. Confirm with a Spanish lawyer before signing.", checklist: [
@@ -314,29 +380,83 @@
       { t: "Opening & activity licence", d: "Confirm all municipal licences are valid and up to date with current regulations; file the cambio de titularidad (licence ownership change) at the Ayuntamiento when signing." },
       { t: "Hidden debts — sucesión de empresa", d: "Acquiring a live economic unit can inherit labour obligations (contracted staff) and fiscal liabilities of the previous owner. Run due diligence beforehand and sign exoneration clauses for past debts." },
       { t: "Special taxation", d: "Premises: subject to IVA if the seller is a business/professional, or ITP if a private individual. Transferring the business as a whole can be outside the scope of IVA under Art. 7.1 Ley del IVA when it forms an autonomous economic unit (unidad económica autónoma) able to operate on its own — structuring premises + business together changes the tax treatment." },
+      { t: "Housing programs don't apply to locals", d: "Mi Primera Vivienda / first-home mortgages and guarantees only cover residential dwellings (vivienda habitual); a commercial local cannot be financed through them. Living in a local without an approved cambio de uso is an infraction, and a change of use to dwelling would then bar the commercial activity licence. Legitimate route to living + studio: buy the local commercially plus a small flat separately — Mi Primera Vivienda can apply to the flat if you don't own a home." },
     ] },
     { name: "Operations & Processes",   value: 0,  note: "No repeatable processes defined yet." },
     { name: "Tech & Software",          value: 10, note: "Project C workspace set up with AI assistant tooling." },
     { name: "HR",                       value: 0,  note: "No hiring, contracts, or policies yet." },
     { name: "Marketing & Brand",        value: 0,  note: "No brand, website, or channels yet." },
-    { name: "Physical Assets",          value: 5,  venue: true, note: "Venue hunt underway: locals for sale and traspasos in Central Madrid, with prices — open this category for the options.", venueIntro: "Objective: buy the local and the existing business (teachers, students, licences, brand) together as one autonomous economic unit. Budget cap: premises under 500,000 €. Indicative prices (researched 2026-11-02): Centro locals ~2,000-4,000 €/m² with the average local at ~158 m² (Salamanca prime above 4,700 €/m²); dance-academy traspasos in the Madrid region have ranged 25,000-130,000 €. All links lead to specific offers; verify each is still active." },
+    { name: "Physical Assets",          value: 5,  venue: true, note: "Price explorers by neighborhood, marketplace links, and a sequencing recommendation — open this category.", venueIntro: "Objective: buy the local and the existing business (teachers, students, licences, brand) together as one autonomous economic unit. Budget cap: premises under 500,000 €. The explorers below show indicative price ranges per central neighborhood (estimates from listings observed 2026-11-02 — rough guides, not appraisals). Play with size and neighborhood, then hunt live offers on the platform links.", reco: "<strong>Recommendation: buy the premises first</strong>, with the business as a second step — unless a packaged business + premises deal appears within budget, which should always win.<br><br><strong>Why premises first:</strong> (1) under the 500,000 € cap, a suitable local is the scarcest asset in central Madrid — once owned, no landlord can hold the school's rent or sale price over you; (2) a traspaso's goodwill is anchored to its rented location — buy it first and its value is hostage to the landlord's willingness to sell, while rent (observed ~2,400 €/month) drains cash as you save; (3) in dance, students follow teachers — from premises you own you can recruit the teachers of a closing school and build your own client base at your own address; (4) a premises-first purchase is a simpler, cleaner transaction while you scout traspasos from a position of strength.<br><br><strong>The counter-case:</strong> if a school with premises-owning sellers appears within budget, buy both together as one autonomous economic unit (Art. 7.1 LIVA). The combined structure remains the ideal; sequencing only applies when no package exists." },
   ];
 
   const LAST_UPDATED = "2026-11-02";
 
   // Venue options researched 2026-11-02. tag: TRASPASO = running business for sale,
   // LOCAL = commercial property, MARKETPLACE = browse more listings, RENTAL = alternative.
-  // Specific offers, researched 2026-11-02, all premises under 500,000 EUR.
-  // Each link leads to an individual listing/ad, not a portal home page.
-  const LOCALS = [
-    { tag: "Local · Malasaña", name: "Street-level unit, heart of Malasaña (LoopNet ad 39470521)", desc: "130 m² at street level within a multi-owner finca in the heart of Malasaña, constant foot traffic. Right size for a studio; verify with the Ayuntamiento that academy use is permitted before committing (see Legal & Regulatory checklist).", price: "Premises: 475,000 € · Business: acquire separately, 25,000-130,000 €", link: "https://www.loopnet.es/anuncio/madrid/39470521/" },
-    { tag: "Local · Malasaña", name: "Calle del Divino Pastor, 32 — bright 123 m² local (LoopNet ad 31536405)", desc: "123 m² unit in the Universidad/Malasaña district, very bright, consolidated residential-commercial street. Currently tenanted (en rentabilidad) — vacant possession for studio use would need negotiating with the tenant or landlord.", price: "Premises: 380,000 € · Business: acquire separately, 25,000-130,000 €", link: "https://www.loopnet.es/anuncio/calle-del-divino-pastor-32-madrid/31536405/" },
+  // Indicative price ranges per central neighborhood, estimated from listings
+  // observed on 2026-11-02 (premises: EUR/m2 to buy a local; traspaso: business
+  // value in EUR/m2 of venue). These are rough guides, not appraisals.
+  const NEIGHBOURHOODS = [
+    { name: "Sol-Palacio",              pre: [2500, 6000], tra: [300, 800] },
+    { name: "Malasaña (Universidad)",   pre: [2500, 5000], tra: [250, 700] },
+    { name: "Chueca (Justicia)",        pre: [2800, 5500], tra: [250, 700] },
+    { name: "Las Letras (Cortes)",     pre: [2800, 5500], tra: [250, 650] },
+    { name: "Lavapiés (Embajadores)",   pre: [2000, 3800], tra: [150, 450] },
+    { name: "La Latina",                pre: [2200, 4200], tra: [200, 500] },
+    { name: "Chamberí",                 pre: [2500, 4800], tra: [250, 650] },
+    { name: "Barrio de Salamanca",      pre: [3500, 7000], tra: [400, 900] },
+    { name: "Retiro (Jerónimos)",       pre: [3000, 5500], tra: [250, 600] },
+    { name: "Arganzuela (Atocha)",      pre: [2200, 4000], tra: [150, 400] },
   ];
 
-  const TRASPASOS = [
-    { tag: "Traspaso · Barrio Salamanca", name: "Running dance academy, Barrio de Salamanca (Milanuncios Ref. 01985)", desc: "The one confirmed dance-academy offer: 130,000 € for the business (licences, client list, goodwill). Premises are rented, not for sale — the deal only fits the combined objective if the landlord can be persuaded to sell the local. Milanuncios opens only from Spain; the ad appears directly on the linked page.", price: "Business: 130,000 € · Premises: rented (~2,400 €/month rent); purchase to negotiate with landlord", link: "https://www.milanuncios.com/traspasos/academia-baile.htm" },
-    { tag: "Traspaso · Barrio Salamanca", name: "Boutique gym, 250 m² fully soundproofed (Negociosenventa ad #7886)", desc: "Running boutique gym in a premium Barrio Salamanca location: 250 m², totally insonorizado (already soundproofed — ideal for dance), luxury finishes, accessible changing rooms, client database of 1,000+ people, 2 employees. Posted 2023 — confirm it is still active. Rent confidential.", price: "Business: 140,000 € · Premises: rented; purchase to negotiate with landlord", link: "https://www.negociosenventa.es/traspaso-cadena-gimnasios-boutique-en-madrid-7258" },
-    { tag: "Traspaso · Ciudad Lineal", name: "Sports centre, 1,000 m² with 3 activity rooms (Negociosenventa ad #7513)", desc: "Operating 1,000 m² sports centre just east of the centre (Ciudad Lineal, 28017): 3 rooms for directed activities (TRX, indoor cycling), 2 machine rooms, 15+ showers, sauna and steam room, client base. The activity rooms could convert to dance studios. Posted Dec 2022 — confirm it is still active.", price: "Business: 50,000 € · Premises: rented; purchase to negotiate with landlord", link: "https://www.negociosenventa.es/traspaso-de-centro-deportivo-en-madrid-6833" },
+  // Interactive cost plan, modelled 2026-11-02: 80 m2 studio in La Latina.
+  // Slider defaults are the worst case (upper limits of the indicative ranges);
+  // every total recomputes automatically when the sliders move.
+  const FIN_INTRO = "Model: 80 m² studio in La Latina. Drag the sliders — every cost and financing total on this page recomputes automatically. Defaults are the worst case (upper limits of the indicative ranges). Loan math uses standard annuity formulas; figures rounded. Estimates for framing, not quotes.";
+  const FIN_SIZE = 80;
+  const FIN_NOTARY = 2000;
+  const FIN_DD = 2500;          // due diligence (lawyer, accounts review)
+  const FIN_TITULARITY = 1200; // licence change of ownership + gestoria
+  const FIN_REFURB = [
+    ["Sprung floor + vinyl dance surface (80 m²)", 8000],
+    ["Wall mirrors with safety film", 3000],
+    ["Ballet barres (two walls)", 1200],
+    ["Soundproofing (insonorización)", 8000],
+    ["HVAC: air conditioning + ventilation", 4000],
+    ["Electrical + studio lighting", 2500],
+    ["Changing area, bathroom, general works, paint", 6500],
+    ["Architect project + licence processing", 3500],
+  ];
+  const FIN_PART2B = [
+    ["Technical project + licencia de apertura (declaración responsable)", 3000],
+    ["Ayuntamiento fees + activity insurance", 800],
+    ["Brand, website, launch marketing (client base from zero)", 6000],
+  ];
+  const FIN_RUNNING_BASE = [
+    ["Community fees", 70],
+    ["Utilities (electricity, water)", 250],
+    ["Insurance (liability + contents)", 90],
+    ["Software / administration", 45],
+    ["Cleaning", 120],
+    ["Ongoing marketing", 150],
+  ];
+
+  function annuity(P, rate, months) {
+    const r = rate / 12;
+    const pay = P * r / (1 - Math.pow(1 + r, -months));
+    return { pay: pay, total: pay * months, interest: pay * months - P };
+  }
+
+  // Generic platforms with pre-populated searches.
+  const PLATFORMS = [
+    { name: "Idealista — locals for sale, Centro", note: "Premises inventory, district Centro", url: "https://www.idealista.com/venta-locales/madrid/centro/" },
+    { name: "Idealista — traspasos, Madrid", note: "Business transfers incl. premises", url: "https://www.idealista.com/traspasos/madrid-madrid/con-locales/" },
+    { name: "Fotocasa — locals for sale, Centro", note: "Broad premises inventory", url: "https://www.fotocasa.es/es/comprar/locales/madrid-capital/centro/l" },
+    { name: "Pisos.com — locals for sale, Centro", note: "Cross-agency premises inventory", url: "https://www.pisos.com/venta/local_comercial-madrid_capital_centro/" },
+    { name: "LoopNet — locals for sale, Centro", note: "Commercial units, often in buildings", url: "https://www.loopnet.es/buscar/locales/centro__madrid--madrid--espana/en-venta/" },
+    { name: "Milanuncios — academia de baile traspasos", note: "Dance school transfers (Spain only)", url: "https://www.milanuncios.com/traspasos/academia-baile.htm" },
+    { name: "Negociosenventa — leisure traspasos, Madrid", note: "Gym/dance/leisure business transfers", url: "https://www.negociosenventa.es/traspaso/ocio/madrid" },
+    { name: "Locales.es — sale and traspaso, Centro", note: "Private and agency listings", url: "https://www.locales.es/madrid/centro/venta" },
   ];
 
   function colorFor(value) {
@@ -500,10 +620,18 @@
     } else if (cat.venue) {
       extra = `
         <p class="subtitle" style="text-align: left; margin-bottom: 1.25rem;">${cat.venueIntro}</p>
-        <div class="subact">Locals for sale — the premises</div>
-        <div class="options" id="local-options"></div>
-        <div class="subact">Traspasos — businesses for sale</div>
-        <div class="options" id="traspaso-options"></div>`;
+        <div class="subact">Price explorer — pick a neighborhood, play with the size</div>
+        <div id="explorer"></div>
+        <div class="subact">Marketplace platforms — pre-populated searches</div>
+        <div class="platforms" id="platforms"></div>
+        <div class="subact">Recommendation — sequencing the deal</div>
+        <div class="reco">${cat.reco}</div>`;
+    } else if (cat.finance) {
+      extra = `
+        <p class="subtitle" style="text-align: left; margin-bottom: 1.25rem;">${FIN_INTRO}</p>
+        <div class="subact">Inputs — play with the prices and rates</div>
+        <div class="xp-inputs" id="fin-inputs"></div>
+        <div id="fin-body"></div>`;
     } else {
       extra = `<p class="subtitle" style="text-align: left;">No further information yet — this category is still at the barre.</p>`;
     }
@@ -524,8 +652,11 @@
       </div>`;
     document.getElementById("back-btn").addEventListener("click", closeDetail);
     if (cat.venue) {
-      renderOptions("local-options", LOCALS);
-      renderOptions("traspaso-options", TRASPASOS);
+      renderPlatforms();
+      buildExplorer();
+    }
+    if (cat.finance) {
+      buildFinance();
     }
     requestAnimationFrame(() => setTimeout(() => {
       detailBox.querySelector(".disc").style.setProperty("--p", cat.value);
@@ -533,20 +664,237 @@
     detailBox.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function renderOptions(boxId, list) {
-    const box = document.getElementById(boxId);
-    list.forEach(opt => {
-      const el = document.createElement("div");
-      el.className = "option";
-      el.innerHTML = `
-        <span class="tag">${opt.tag}</span>
-        <div class="opt-name">${opt.name}</div>
-        <div class="opt-desc">${opt.desc}</div>
-        <div class="opt-price">${opt.price}</div>
-        <a href="${opt.link}" target="_blank" rel="noopener">View listing</a>
-      `;
-      box.appendChild(el);
+  function finTable(rows) {
+    return `<table class="fin-table">${rows.map(r => {
+      if (r.k === "section") return `<tr class="section"><td colspan="2">${r.l}</td></tr>`;
+      const cls = r.k === "total" ? "total" : (r.k === "sub" ? "sub" : "");
+      const amt = r.a ? `<td class="amt">${r.a}</td>` : `<td class="amt"></td>`;
+      return `<tr class="${cls}"><td>${r.l}</td>${amt}</tr>`;
+    }).join("")}</table>`;
+  }
+
+  // --- Interactive finance calculator (80 m2, La Latina) ---
+  function buildFinance() {
+    document.getElementById("fin-inputs").innerHTML = `
+      <label>Premises price: <input type="range" id="fin-pre" min="2200" max="4200" step="50" value="4200"> <span id="fin-pre-v"></span></label>
+      <label>Traspaso price: <input type="range" id="fin-tra" min="0" max="600" step="10" value="500"> <span id="fin-tra-v"></span></label>
+      <label>Loan 1 rate: <input type="range" id="fin-r1" min="3.5" max="6" step="0.1" value="4.8"> <span id="fin-r1-v"></span></label>
+      <label>Loan 2 rate: <input type="range" id="fin-r2" min="5" max="10" step="0.1" value="8.5"> <span id="fin-r2-v"></span></label>`;
+    ["fin-pre", "fin-tra", "fin-r1", "fin-r2"].forEach(id =>
+      document.getElementById(id).addEventListener("input", finUpdate));
+    finUpdate();
+  }
+
+  function finUpdate() {
+    const pre = parseInt(document.getElementById("fin-pre").value, 10);
+    const tra = parseInt(document.getElementById("fin-tra").value, 10);
+    const r1 = parseFloat(document.getElementById("fin-r1").value);
+    const r2 = parseFloat(document.getElementById("fin-r2").value);
+    document.getElementById("fin-pre-v").textContent = pre.toLocaleString("es-ES") + " €/m² → " + fmtEur(pre * FIN_SIZE);
+    document.getElementById("fin-tra-v").textContent = tra.toLocaleString("es-ES") + " €/m² → " + fmtEur(tra * FIN_SIZE);
+    document.getElementById("fin-r1-v").textContent = r1.toFixed(1).replace(".", ",") + "% fixed";
+    document.getElementById("fin-r2-v").textContent = r2.toFixed(1).replace(".", ",") + "%";
+
+    const price = pre * FIN_SIZE;
+    const itp = price * 0.06;
+    const refurbSub = FIN_REFURB.reduce((s, x) => s + x[1], 0);
+    const contingency = Math.round(refurbSub * 0.10 / 100) * 100;
+    const refurbTotal = refurbSub + contingency;
+    const part1 = price + itp + FIN_NOTARY + refurbTotal;
+
+    const traspasoPrice = tra * FIN_SIZE;
+    const part2a = traspasoPrice + FIN_DD + FIN_TITULARITY;
+    const part2b = FIN_PART2B.reduce((s, x) => s + x[1], 0);
+
+    const ibi = Math.round(1600 * (price / 256000) / 12);
+    const runningTotal = ibi + FIN_RUNNING_BASE.reduce((s, x) => s + x[1], 0);
+
+    const l1P = price * 0.70;
+    const a1 = annuity(l1P, r1 / 100, 240);
+    const l2P = Math.ceil((refurbTotal + part2a + FIN_NOTARY) / 10000) * 10000;
+    const a2 = annuity(l2P, r2 / 100, 84);
+    const l2P_B = Math.ceil((refurbTotal + part2b + FIN_NOTARY) / 10000) * 10000;
+    const a2b = annuity(l2P_B, r2 / 100, 84);
+    const equityA = part1 + part2a - l1P - l2P;
+    const equityB = part1 + part2b - l1P - l2P_B;
+
+    const part1Rows = [
+      { k: "section", l: "Acquisition" },
+      { l: "Purchase price — " + FIN_SIZE + " m² × " + pre.toLocaleString("es-ES") + " €/m² (La Latina range 2,200-4,200)", a: fmtEur(price) },
+      { l: "ITP property transfer tax (6%, Comunidad de Madrid, private seller)", a: fmtEur(itp) },
+      { l: "Notary + property registry (escritura, inscripción)", a: fmtEur(FIN_NOTARY) },
+      { k: "section", l: "Refurbishment — shell to dance studio" },
+      ...FIN_REFURB.map(x => ({ l: x[0], a: fmtEur(x[1]) })),
+      { k: "sub", l: "Works subtotal", a: fmtEur(refurbSub) },
+      { l: "Contingency (10% of works)", a: fmtEur(contingency) },
+      { k: "total", l: "Part 1 total — buying the premises, studio-ready", a: fmtEur(part1) },
+    ];
+    const part2aRows = [
+      { k: "section", l: "Option A — buying a traspaso (existing school)" },
+      { l: "Traspaso of a small academy — " + FIN_SIZE + " m² × " + tra.toLocaleString("es-ES") + " €/m² of venue", a: fmtEur(traspasoPrice) },
+      { l: "Due diligence: lawyer, accounts and liabilities review", a: fmtEur(FIN_DD) },
+      { l: "Licence change of ownership (Ayuntamiento) + gestoría", a: fmtEur(FIN_TITULARITY) },
+      { k: "total", l: "Part 2A total — business via traspaso", a: fmtEur(part2a) },
+    ];
+    const part2bRows = [
+      { k: "section", l: "Option B — creating a new licence (own school)" },
+      ...FIN_PART2B.map(x => ({ l: x[0], a: fmtEur(x[1]) })),
+      { k: "total", l: "Part 2B total — business from scratch", a: fmtEur(part2b) },
+    ];
+    const runningRows = [
+      { k: "section", l: "Running costs (both options)" },
+      { l: "IBI property tax (approx. " + Math.round(1600 * price / 256000).toLocaleString("es-ES") + " €/year, scaled to the price)", a: ibi + " €/mo" },
+      ...FIN_RUNNING_BASE.map(x => ({ l: x[0], a: x[1] + " €/mo" })),
+      { k: "total", l: "Baseline running costs (excludes teacher pay — variable per class)", a: runningTotal + " €/mo" },
+    ];
+    const loanRows = [
+      { k: "section", l: "Loan 1 — commercial mortgage on the premises" },
+      { l: "Available from: traditional banks (Santander, BBVA, CaixaBank, Bankinter, Sabadell)", a: "" },
+      { l: "Amount: 70% of purchase price (typical 60-70% LTV on commercial premises)", a: fmtEur(l1P) },
+      { l: "Interest rate: " + r1.toFixed(1).replace(".", ",") + "% fixed · term: 20 years (240 months)", a: "" },
+      { l: "Monthly repayment", a: fmtEur(a1.pay) + "/mo" },
+      { l: "Total interest over the life of the loan", a: fmtEur(a1.interest) },
+      { k: "sub", l: "Total repaid", a: fmtEur(a1.total) },
+      { k: "section", l: "Loan 2 — business loan for refurbishment + traspaso" },
+      { l: "Available from: banks' SME lines (e.g. ICO-backed business loans, 50k-100k typical)", a: "" },
+      { l: "Amount (works + traspaso + notary, rounded up to 10k)", a: fmtEur(l2P) },
+      { l: "Interest rate: " + r2.toFixed(1).replace(".", ",") + "% · term: 7 years (84 months)", a: "" },
+      { l: "Monthly repayment", a: fmtEur(a2.pay) + "/mo" },
+      { l: "Total interest over the life of the loan", a: fmtEur(a2.interest) },
+      { k: "sub", l: "Total repaid", a: fmtEur(a2.total) },
+      { l: "With Option B (new licence) instead, Loan 2 shrinks to " + fmtEur(l2P_B) + " → " + fmtEur(a2b.pay) + "/mo", a: "" },
+      { k: "total", l: "Combined monthly debt service (Option A)", a: fmtEur(a1.pay + a2.pay) + "/mo" },
+    ];
+    const summaryRows = [
+      { k: "section", l: "Summary (live)" },
+      { l: "Total project cost — premises + traspaso (Option A)", a: fmtEur(part1 + part2a) },
+      { l: "Total project cost — premises + new licence (Option B)", a: fmtEur(part1 + part2b) },
+      { l: "Own equity needed — Option A (project minus the two loans)", a: fmtEur(equityA) },
+      { l: "Own equity needed — Option B", a: fmtEur(equityB) },
+      { l: "Loan 2 fully repaid at year 7; Loan 1 at year 20", a: "" },
+      { l: price <= 500000 ? "Premises purchase price — under the 500,000 € budget cap" : "Premises purchase price — OVER the 500,000 € budget cap", a: fmtEur(price) },
+    ];
+
+    document.getElementById("fin-body").innerHTML = `
+      <div class="subact">Part 1 — Buying the premises</div>${finTable(part1Rows)}
+      <div class="subact">Part 2A — Buying a traspaso</div>${finTable(part2aRows)}
+      <div class="subact">Part 2B — Creating a new licence</div>${finTable(part2bRows)}
+      <div class="subact">Running costs</div>${finTable(runningRows)}
+      <p class="fin-note">Teacher pay is excluded: freelance teachers in Madrid charge per class, so it scales with the timetable you run.</p>
+      <div class="subact">Financing — two separate loans</div>${finTable(loanRows)}
+      <div class="subact">Summary</div>${finTable(summaryRows)}
+      <p class="fin-note">Indicative estimates (2026-11-02) for framing and negotiation, not quotes. Get formal offers: mortgage quotes from at least two banks, plus an ICO-backed SME loan quote.</p>`;
+  }
+
+  // --- Venue explorer: neighborhood prices, platforms ---
+  const PREMISES_COLOR = "#8a6a56";
+  const TRASPASO_COLOR = "#7b5aa7";
+  const COMBINED_GRADIENT = "linear-gradient(90deg, #8a6a56, #7b5aa7)";
+  let xpN = 1;   // selected neighborhood (default: Malasaña)
+  let xpMode = "premises";
+
+  const fmtEur = (n) => Math.round(n).toLocaleString("es-ES") + " €";
+
+  function renderPlatforms() {
+    document.getElementById("platforms").innerHTML = PLATFORMS.map(p => `
+      <div class="platform">
+        <a href="${p.url}" target="_blank" rel="noopener">${p.name}</a>
+        <div class="pl-note">${p.note}</div>
+      </div>`).join("");
+  }
+
+  function rangeBar(label, low, high, scaleMax, color, marker, markerNote) {
+    const leftPct = (low / scaleMax * 100).toFixed(2);
+    const widthPct = Math.max(1.5, (high - low) / scaleMax * 100).toFixed(2);
+    let markerHtml = "";
+    if (marker != null && marker > 0) {
+      const mpct = Math.min(100, marker / scaleMax * 100).toFixed(2);
+      markerHtml = `<div class="marker" style="left:${mpct}%;"></div>`;
+    }
+    return `
+      <div class="xbar-label">${label}</div>
+      <div class="xbar"><div class="seg" style="left:${leftPct}%; width:${widthPct}%; background:${color};"></div>${markerHtml}</div>
+      <div class="xbar-scale">${fmtEur(low)} — ${fmtEur(high)}${markerNote ? " · marker: " + markerNote : ""}</div>`;
+  }
+
+  function updateExplorer() {
+    const nb = NEIGHBOURHOODS[xpN];
+    const size = parseInt(document.getElementById("xp-size").value, 10);
+    const budget = parseFloat(document.getElementById("xp-budget").value) || 0;
+    document.getElementById("xp-size-val").textContent = size + " m²";
+    const preLow = nb.pre[0] * size, preHigh = nb.pre[1] * size;
+    const traLow = nb.tra[0] * size, traHigh = nb.tra[1] * size;
+    const scaleMax = (preHigh + traHigh) * 1.15 || 1;
+    const overBudget = preHigh > budget ? `<p class="xbar-scale" style="color:#b3705f;">Note: at ${size} m² the upper end for premises exceeds your ${fmtEur(budget)} budget — consider a smaller local, a cheaper neighborhood, or negotiation room.</p>` : "";
+    document.getElementById("xp-results").innerHTML = `
+      ${rangeBar("Premises — " + nb.name + ", " + size + " m²", preLow, preHigh, scaleMax, PREMISES_COLOR, budget, "your budget")}
+      ${rangeBar("Traspaso — business value", traLow, traHigh, scaleMax, TRASPASO_COLOR, null)}
+      ${rangeBar("Combined total", preLow + traLow, preHigh + traHigh, scaleMax, COMBINED_GRADIENT, budget, "premises budget")}
+      <p class="xbar-scale">Per m² in ${nb.name}: premises ${nb.pre[0].toLocaleString("es-ES")}-${nb.pre[1].toLocaleString("es-ES")} €/m² · traspaso ${nb.tra[0]}-${nb.tra[1]} €/m² of venue.</p>
+      ${overBudget}`;
+  }
+
+  function drawChart() {
+    const box = document.getElementById("xp-chart");
+    const key = xpMode === "premises" ? "pre" : "tra";
+    const max = Math.max(...NEIGHBOURHOODS.map(n => n[key][1]));
+    const color = xpMode === "premises" ? PREMISES_COLOR : TRASPASO_COLOR;
+    box.innerHTML = NEIGHBOURHOODS.map((n, i) => {
+      const left = (n[key][0] / max * 100).toFixed(2);
+      const width = Math.max(1.5, (n[key][1] - n[key][0]) / max * 100).toFixed(2);
+      return `
+        <div class="range-row${i === xpN ? " selected" : ""}" data-i="${i}">
+          <span class="rname">${n.name}</span>
+          <div class="xbar" style="height: 10px; margin: 0;">
+            <div class="seg" style="left:${left}%; width:${width}%; background:${color};"></div>
+          </div>
+        </div>`;
+    }).join("") + `<p class="xbar-scale" style="margin-top: 0.5rem;">Indicative ${xpMode === "premises" ? "premises €/m²" : "traspaso €/m² of venue"} by neighborhood — click a row to select it.</p>`;
+    box.querySelectorAll(".range-row").forEach(row => {
+      row.addEventListener("click", () => {
+        xpN = parseInt(row.dataset.i, 10);
+        renderPills(); updateExplorer(); drawChart();
+      });
     });
+  }
+
+  function renderPills() {
+    const box = document.getElementById("nb-pills");
+    box.innerHTML = "";
+    NEIGHBOURHOODS.forEach((n, i) => {
+      const b = document.createElement("button");
+      b.className = "pill" + (i === xpN ? " active" : "");
+      b.textContent = n.name;
+      b.addEventListener("click", () => { xpN = i; renderPills(); updateExplorer(); drawChart(); });
+      box.appendChild(b);
+    });
+  }
+
+  function syncToggle() {
+    document.getElementById("tg-premises").classList.toggle("active", xpMode === "premises");
+    document.getElementById("tg-traspaso").classList.toggle("active", xpMode === "traspaso");
+  }
+
+  function buildExplorer() {
+    document.getElementById("explorer").innerHTML = `
+      <div class="pills" id="nb-pills"></div>
+      <div class="xp-inputs">
+        <label>Studio size: <input type="range" id="xp-size" min="60" max="400" step="5" value="130"> <span id="xp-size-val">130 m²</span></label>
+        <label>Premises budget: <input type="number" id="xp-budget" min="50000" step="10000" value="500000"> €</label>
+      </div>
+      <div id="xp-results"></div>
+      <div style="margin: 1.5rem 0 0.6rem;">
+        <button class="toggle-btn active" id="tg-premises">Premises €/m²</button>
+        <button class="toggle-btn" id="tg-traspaso">Traspaso €/m²</button>
+      </div>
+      <div id="xp-chart"></div>`;
+    document.getElementById("tg-premises").addEventListener("click", () => { xpMode = "premises"; syncToggle(); drawChart(); });
+    document.getElementById("tg-traspaso").addEventListener("click", () => { xpMode = "traspaso"; syncToggle(); drawChart(); });
+    document.getElementById("xp-size").addEventListener("input", updateExplorer);
+    document.getElementById("xp-budget").addEventListener("input", updateExplorer);
+    renderPills();
+    updateExplorer();
+    drawChart();
   }
 </script>
 </body>
