@@ -319,19 +319,18 @@
     { name: "Tech & Software",          value: 10, note: "Project C workspace set up with AI assistant tooling." },
     { name: "HR",                       value: 0,  note: "No hiring, contracts, or policies yet." },
     { name: "Marketing & Brand",        value: 0,  note: "No brand, website, or channels yet." },
-    { name: "Physical Assets",          value: 5,  venue: true, note: "Venue hunt underway: locals for sale and traspasos in Central Madrid, with prices — open this category for the options.", venueIntro: "Objective: buy the local and the existing business (teachers, students, licences, brand) together as one autonomous economic unit. Indicative prices (researched 2026-11-02): Centro locals ~2,000-4,000 €/m² with the average local at ~158 m² (Salamanca prime above 4,700 €/m²); dance-academy traspasos in the Madrid region have ranged 25,000-130,000 €. All links lead to specific offers; verify each is still active." },
+    { name: "Physical Assets",          value: 5,  venue: true, note: "Venue hunt underway: locals for sale and traspasos in Central Madrid, with prices — open this category for the options.", venueIntro: "Objective: buy the local and the existing business (teachers, students, licences, brand) together as one autonomous economic unit. Budget cap: premises under 500,000 €. Indicative prices (researched 2026-11-02): Centro locals ~2,000-4,000 €/m² with the average local at ~158 m² (Salamanca prime above 4,700 €/m²); dance-academy traspasos in the Madrid region have ranged 25,000-130,000 €. All links lead to specific offers; verify each is still active." },
   ];
 
   const LAST_UPDATED = "2026-11-02";
 
   // Venue options researched 2026-11-02. tag: TRASPASO = running business for sale,
   // LOCAL = commercial property, MARKETPLACE = browse more listings, RENTAL = alternative.
-  // Specific offers, researched 2026-11-02. Each link leads to an individual
-  // listing/ad, not a portal home page. Verify availability before acting.
+  // Specific offers, researched 2026-11-02, all premises under 500,000 EUR.
+  // Each link leads to an individual listing/ad, not a portal home page.
   const LOCALS = [
     { tag: "Local · Malasaña", name: "Street-level unit, heart of Malasaña (LoopNet ad 39470521)", desc: "130 m² at street level within a multi-owner finca in the heart of Malasaña, constant foot traffic. Right size for a studio; verify with the Ayuntamiento that academy use is permitted before committing (see Legal & Regulatory checklist).", price: "Premises: 475,000 € · Business: acquire separately, 25,000-130,000 €", link: "https://www.loopnet.es/anuncio/madrid/39470521/" },
-    { tag: "Local · Malasaña", name: "Calle-area local near Callao/Gran Vía (Tecnocasa ref. 621205)", desc: "295 m² built (400 m² listed), open-plan with abundant natural light and wide street frontage, in Malasaña-Justicia-Universidad. Currently rented to a bazaar — vacant possession would need to be negotiated with the tenant for studio use.", price: "Premises: 949,000 € · Business: acquire separately, 25,000-130,000 €", link: "https://www.tecnocasa.es/venta/local-comercial/madrid/madrid/621205.html" },
-    { tag: "Local · Malasaña", name: "Corredera Alta de San Pablo — open-plan local (Diza Consultores)", desc: "Ground-floor diáfano local (78 m² street level + 60 m² lower level) on Malasaña's prime commercial street. Open-plan layout suits studio conversion with minimal structural work. Price on request from the agency.", price: "Premises: on request · Business: acquire separately, 25,000-130,000 €", link: "https://dizaconsultores.com/inmueble/fantastico-local-en-malasana/" },
+    { tag: "Local · Malasaña", name: "Calle del Divino Pastor, 32 — bright 123 m² local (LoopNet ad 31536405)", desc: "123 m² unit in the Universidad/Malasaña district, very bright, consolidated residential-commercial street. Currently tenanted (en rentabilidad) — vacant possession for studio use would need negotiating with the tenant or landlord.", price: "Premises: 380,000 € · Business: acquire separately, 25,000-130,000 €", link: "https://www.loopnet.es/anuncio/calle-del-divino-pastor-32-madrid/31536405/" },
   ];
 
   const TRASPASOS = [
