@@ -211,6 +211,17 @@
     border-bottom: 1px dotted var(--purple);
   }
   .option a:hover { color: #6d4a9e; }
+  .subact {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.5rem 0 1rem;
+    color: var(--purple);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .subact::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 
   footer {
     margin-top: 2.5rem;
@@ -263,8 +274,13 @@
   <div class="company" id="categories"></div>
 
   <div class="act">Act III · The Venue Hunt — premises + running dance business in Central Madrid</div>
-  <p class="subtitle" style="margin-bottom: 1.25rem;">Objective: buy the local and the existing business (teachers, students, licences, brand) together as one autonomous economic unit. Indicative prices (researched 2026-11-02): Centro locals ~2,000-4,000 €/m² with the average local at ~158 m² (Salamanca prime above 4,700 €/m²); dance-academy traspasos in the Madrid region have ranged 25,000-130,000 €. Milanuncios only opens from within Spain.</p>
-  <div class="options" id="venue-options"></div>
+  <p class="subtitle" style="margin-bottom: 1.25rem;">Objective: buy the local and the existing business (teachers, students, licences, brand) together as one autonomous economic unit. Indicative prices (researched 2026-11-02): Centro locals ~2,000-4,000 €/m² with the average local at ~158 m² (Salamanca prime above 4,700 €/m²); dance-academy traspasos in the Madrid region have ranged 25,000-130,000 €. All links below lead to specific offers; verify each is still active before acting on it.</p>
+
+  <div class="subact">Locals for sale — the premises</div>
+  <div class="options" id="local-options"></div>
+
+  <div class="subact">Traspasos — businesses for sale</div>
+  <div class="options" id="traspaso-options"></div>
 
   <footer>
     <p class="quote">"Every performance begins at the barre."</p>
@@ -295,17 +311,18 @@
 
   // Venue options researched 2026-11-02. tag: TRASPASO = running business for sale,
   // LOCAL = commercial property, MARKETPLACE = browse more listings, RENTAL = alternative.
-  // Venue propositions researched 2026-11-02, focused on deals where the premises
-  // can be bought together with the business. Prices are indicative.
-  const OPTIONS = [
-    { tag: "Reference offer", name: "Milanuncios — running dance academy, Barrio de Salamanca (Ref. 01985)", desc: "The one confirmed offer behind the earlier duplicates: 130,000 EUR for the traspaso only (business, licences, client list) — the premises are not included. Fits the combined objective only if the landlord will sell the local. If Salamanca premises became available, budget at prime rates (~4,700 EUR/m²).", price: "Business: 130,000 EUR · Premises: not offered (rented)", link: "https://www.milanuncios.com/traspasos/academia-baile.htm" },
-    { tag: "Packaged deal", name: "Idealista traspasos — Madrid (premises + business)", desc: "The main marketplace where transfers appear with the local included (local en propiedad). Filter for ocio/academia and enquire specifically whether premises are part of the deal — these are the closest match to buying place + business together.", price: "Traspaso typically 50,000-200,000 EUR · premises priced separately when included", link: "https://www.idealista.com/traspasos/madrid-madrid/con-locales/" },
-    { tag: "Premises listing", name: "Malasaña, Distrito Centro — 130 m² street-level local, 475,000 EUR (LoopNet)", desc: "Specific verified listing: 130 m² unit at street level within a multi-owner finca in the heart of Malasaña, constant foot traffic. Right size and location for a studio; verify with the Ayuntamiento that academy use is possible before committing (see Legal & Regulatory checklist).", price: "Premises: 475,000 EUR · Business: separate acquisition 25,000-130,000 EUR", link: "https://www.loopnet.es/anuncio/madrid/39470521/" },
-    { tag: "Premises listing", name: "Corredera Alta de San Pablo, Malasaña — 138 m² open-plan local (Diza Consultores)", desc: "Ground-floor diáfano local (78 m² street level + 60 m² lower level) on Malasaña's prime commercial street. Open-plan layout suits studio conversion with minimal structural work.", price: "On request · Business: separate acquisition 25,000-130,000 EUR", link: "https://dizaconsultores.com/inmueble/fantastico-local-en-malasana/" },
-    { tag: "Premises listing", name: "Centro, private sellers — 150-163 m² locals from 180,000 EUR (Locales.es)", desc: "Direct-from-owner listings in Sol/Centro, including a 150 m² local (100 m² street level + 50 m² open-plan basement) with a licence in force. Centro average asking price across private listings: 3,405 EUR/m².", price: "From 180,000 EUR · Business: separate acquisition 25,000-130,000 EUR", link: "https://www.locales.es/madrid/centro/venta/particular" },
-    { tag: "Premises listing", name: "Lavapiés-Embajadores — 152 m² single-storey corner local (Milanuncios)", desc: "Corner local near Plaza de Gloria Fuertes, 152 m² usable on one floor, active cultural and nightlife area. Open the link from Spain to see photos, price and the owner's contact.", price: "On request (Milanuncios) · Business: separate acquisition 25,000-130,000 EUR", link: "https://www.milanuncios.com/venta-de-locales-comerciales-en-madrid-madrid/lavapies.htm" },
-    { tag: "Direct approach", name: "Established central Madrid studios — discreet purchase inquiry", desc: "Packaged dance-school sales are rare on portals; owners of established central studios may consider selling business + premises when approached directly, especially near retirement. Shortlist candidates from the directory, then ask about premises ownership and intent to sell.", price: "Business: 50,000-150,000 EUR indicative · Premises: 300,000-600,000 EUR in Centro", link: "https://www.yelp.com/search?cflt=dancestudio&find_loc=Madrid" },
-    { tag: "Marketplace", name: "BusinessesForSale — Madrid (look for 'premises included')", desc: "International business-for-sale marketplace with leisure and education listings in Madrid. Watch for listings flagged local en propiedad — those are the packaged business + premises deals.", price: "Various", link: "https://spain.businessesforsale.com/spanish/search/businesses-for-sale-in-madrid-spain" },
+  // Specific offers, researched 2026-11-02. Each link leads to an individual
+  // listing/ad, not a portal home page. Verify availability before acting.
+  const LOCALS = [
+    { tag: "Local · Malasaña", name: "Street-level unit, heart of Malasaña (LoopNet ad 39470521)", desc: "130 m² at street level within a multi-owner finca in the heart of Malasaña, constant foot traffic. Right size for a studio; verify with the Ayuntamiento that academy use is permitted before committing (see Legal & Regulatory checklist).", price: "Premises: 475,000 € · Business: acquire separately, 25,000-130,000 €", link: "https://www.loopnet.es/anuncio/madrid/39470521/" },
+    { tag: "Local · Malasaña", name: "Calle-area local near Callao/Gran Vía (Tecnocasa ref. 621205)", desc: "295 m² built (400 m² listed), open-plan with abundant natural light and wide street frontage, in Malasaña-Justicia-Universidad. Currently rented to a bazaar — vacant possession would need to be negotiated with the tenant for studio use.", price: "Premises: 949,000 € · Business: acquire separately, 25,000-130,000 €", link: "https://www.tecnocasa.es/venta/local-comercial/madrid/madrid/621205.html" },
+    { tag: "Local · Malasaña", name: "Corredera Alta de San Pablo — open-plan local (Diza Consultores)", desc: "Ground-floor diáfano local (78 m² street level + 60 m² lower level) on Malasaña's prime commercial street. Open-plan layout suits studio conversion with minimal structural work. Price on request from the agency.", price: "Premises: on request · Business: acquire separately, 25,000-130,000 €", link: "https://dizaconsultores.com/inmueble/fantastico-local-en-malasana/" },
+  ];
+
+  const TRASPASOS = [
+    { tag: "Traspaso · Barrio Salamanca", name: "Running dance academy, Barrio de Salamanca (Milanuncios Ref. 01985)", desc: "The one confirmed dance-academy offer: 130,000 € for the business (licences, client list, goodwill). Premises are rented, not for sale — the deal only fits the combined objective if the landlord can be persuaded to sell the local. Milanuncios opens only from Spain; the ad appears directly on the linked page.", price: "Business: 130,000 € · Premises: rented (~2,400 €/month rent); purchase to negotiate with landlord", link: "https://www.milanuncios.com/traspasos/academia-baile.htm" },
+    { tag: "Traspaso · Barrio Salamanca", name: "Boutique gym, 250 m² fully soundproofed (Negociosenventa ad #7886)", desc: "Running boutique gym in a premium Barrio Salamanca location: 250 m², totally insonorizado (already soundproofed — ideal for dance), luxury finishes, accessible changing rooms, client database of 1,000+ people, 2 employees. Posted 2023 — confirm it is still active. Rent confidential.", price: "Business: 140,000 € · Premises: rented; purchase to negotiate with landlord", link: "https://www.negociosenventa.es/traspaso-cadena-gimnasios-boutique-en-madrid-7258" },
+    { tag: "Traspaso · Ciudad Lineal", name: "Sports centre, 1,000 m² with 3 activity rooms (Negociosenventa ad #7513)", desc: "Operating 1,000 m² sports centre just east of the centre (Ciudad Lineal, 28017): 3 rooms for directed activities (TRX, indoor cycling), 2 machine rooms, 15+ showers, sauna and steam room, client base. The activity rooms could convert to dance studios. Posted Dec 2022 — confirm it is still active.", price: "Business: 50,000 € · Premises: rented; purchase to negotiate with landlord", link: "https://www.negociosenventa.es/traspaso-de-centro-deportivo-en-madrid-6833" },
   ];
 
   function colorFor(value) {
@@ -457,19 +474,23 @@
   document.getElementById("last-updated").textContent = LAST_UPDATED;
 
   // --- Act III: the venue hunt ---
-  const optionsBox = document.getElementById("venue-options");
-  OPTIONS.forEach(opt => {
-    const el = document.createElement("div");
-    el.className = "option";
-    el.innerHTML = `
-      <span class="tag">${opt.tag}</span>
-      <div class="opt-name">${opt.name}</div>
-      <div class="opt-desc">${opt.desc}</div>
-      <div class="opt-price">${opt.price}</div>
-      <a href="${opt.link}" target="_blank" rel="noopener">View listing</a>
-    `;
-    optionsBox.appendChild(el);
-  });
+  function renderOptions(boxId, list) {
+    const box = document.getElementById(boxId);
+    list.forEach(opt => {
+      const el = document.createElement("div");
+      el.className = "option";
+      el.innerHTML = `
+        <span class="tag">${opt.tag}</span>
+        <div class="opt-name">${opt.name}</div>
+        <div class="opt-desc">${opt.desc}</div>
+        <div class="opt-price">${opt.price}</div>
+        <a href="${opt.link}" target="_blank" rel="noopener">View listing</a>
+      `;
+      box.appendChild(el);
+    });
+  }
+  renderOptions("local-options", LOCALS);
+  renderOptions("traspaso-options", TRASPASOS);
 </script>
 </body>
 </html>
