@@ -299,6 +299,42 @@
   }
   .fin-table tr.total td.amt { color: var(--purple); }
   .fin-note { font-size: 0.75rem; color: var(--muted); font-style: italic; margin: -0.5rem 0 1.25rem; }
+  .stack {
+    position: relative;
+    height: 26px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    margin: 0.4rem 0 0.55rem;
+    background: rgba(24, 18, 26, 0.08);
+  }
+  .stack .chunk { height: 100%; }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.1rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 1.1rem;
+  }
+  .legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 0.35rem; vertical-align: middle; }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  .step {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    background: #fffdf9;
+  }
+  .step .step-title { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple); font-weight: 600; }
+  .step .step-line { font-size: 0.82rem; color: var(--muted); margin-top: 0.45rem; }
+  .step .step-line strong { color: var(--text); }
+  .step .step-eq { font-size: 0.95rem; font-weight: 700; color: var(--brown); margin-top: 0.55rem; }
+  .step .step-eq small { font-weight: 400; color: var(--muted); font-size: 0.72rem; display: block; margin-top: 0.1rem; }
   .subact {
     display: flex;
     align-items: center;
@@ -412,11 +448,12 @@
   // Interactive cost plan, modelled 2026-11-02: 80 m2 studio in La Latina.
   // Slider defaults are the worst case (upper limits of the indicative ranges);
   // every total recomputes automatically when the sliders move.
-  const FIN_INTRO = "Model: 80 m² studio in La Latina. Drag the sliders — every cost and financing total on this page recomputes automatically. Defaults are the worst case (upper limits of the indicative ranges). Loan math uses standard annuity formulas; figures rounded. Estimates for framing, not quotes.";
+  const FIN_INTRO = "Model: 80 m² studio in La Latina. Drag the sliders — every cost and financing total recomputes automatically. Defaults are the worst case (upper limits of the indicative ranges). Tick 'owner's bedroom' to model the mixed-use variant (studio with a legal dwelling corner). Loan math uses standard annuity formulas; figures rounded. Estimates for framing, not quotes.";
   const FIN_SIZE = 80;
   const FIN_NOTARY = 2000;
   const FIN_DD = 2500;          // due diligence (lawyer, accounts review)
   const FIN_TITULARITY = 1200; // licence change of ownership + gestoria
+  const FIN_BED_FEES = 4500;   // compatibility-of-uses report + partial change of use
   const FIN_REFURB = [
     ["Sprung floor + vinyl dance surface (80 m²)", 8000],
     ["Wall mirrors with safety film", 3000],
@@ -439,6 +476,23 @@
     ["Software / administration", 45],
     ["Cleaning", 120],
     ["Ongoing marketing", 150],
+  ];
+  const FIN_BED_WORKS = [
+    ["Bedroom partition, door, insulation (approx. 18 m²)", 3500],
+    ["Second bathroom (ensuite) for the dwelling corner", 7000],
+    ["Ventilation / natural-light solution for habitability", 2500],
+  ];
+  const LOAN_ROUTES = [
+    { k: "section", l: "Route 1 — commercial mortgage (the premises)" },
+    { l: "Applies to: buying the local. Even with a mixed-use project, the appraiser classifies it as commercial until a change of use is registered", a: "60-70% LTV" },
+    { l: "Banks: Santander, BBVA, CaixaBank, Bankinter, Sabadell · 10-20 years · ~3.8-4.8% fixed or Euríbor + 1.5-2%", a: "" },
+    { k: "section", l: "Route 2 — SME / ICO-backed business loan (works + business)" },
+    { l: "Applies to: refurbishment (incl. the bedroom conversion, presented inside the dance-studio project file), traspaso or new licence", a: "50k-100k" },
+    { l: "Banks' SME lines and ICO loans · 5-8 years · ~6.5-8.5% (ICO-backed can be lower)", a: "" },
+    { k: "section", l: "Route 3 — only if living centrally is essential: separate studio flat" },
+    { l: "A small flat (100k-150k in La Latina / Lavapiés) financed with a residential mortgage — Mi Primera Vivienda can apply if you don't own a home", a: "" },
+    { k: "section", l: "Not a route" },
+    { l: "Mi Primera Vivienda on the local itself: only covers residential dwellings — see Legal & Regulatory", a: "n/a" },
   ];
 
   function annuity(P, rate, months) {
@@ -479,7 +533,7 @@
   // --- Act I: the radial ring ---
   const SVG_NS = "http://www.w3.org/2000/svg";
   const ring = document.getElementById("ring");
-  const CX = 210, CY = 210, R = 168, STROKE = 34;
+  const CX = 210, CY = 210, R = 168, STROKE = 16, FINE = 5;
 
   function polar(angleDeg) {
     const a = (angleDeg - 90) * Math.PI / 180;
@@ -532,7 +586,7 @@
     track.setAttribute("d", arcPath(start, end));
     track.setAttribute("class", "track");
     track.setAttribute("fill", "none");
-    track.setAttribute("stroke", "#e7dbc9");
+    track.setAttribute("stroke", "#ece2d4");
     track.setAttribute("stroke-width", STROKE);
     g.appendChild(track);
 
@@ -542,13 +596,24 @@
       fill.setAttribute("d", arcPath(start, fillEnd));
       fill.setAttribute("class", "fill");
       fill.setAttribute("fill", "none");
-      fill.setAttribute("stroke", colorFor(cat.value));
-      fill.setAttribute("stroke-width", STROKE);
+      fill.setAttribute("stroke", "#8f6bb0");
+      fill.setAttribute("stroke-width", FINE);
       fill.setAttribute("stroke-linecap", "round");
       fill.setAttribute("pathLength", "100");
       g.appendChild(fill);
+      const [bx, by] = polar(fillEnd);
+      const bead = document.createElementNS(SVG_NS, "circle");
+      bead.setAttribute("cx", bx);
+      bead.setAttribute("cy", by);
+      bead.setAttribute("r", 5.5);
+      bead.setAttribute("fill", colorFor(cat.value));
+      bead.setAttribute("class", "bead");
+      bead.style.opacity = "0";
+      bead.style.transition = "opacity 0.8s ease";
+      g.appendChild(bead);
       requestAnimationFrame(() => setTimeout(() => {
         fill.style.strokeDashoffset = 100 - cat.value;
+        bead.style.opacity = "1";
       }, 60));
     }
 
@@ -673,15 +738,32 @@
     }).join("")}</table>`;
   }
 
+  function stackBar(scale, parts) {
+    let html = `<div class="stack">`;
+    parts.forEach(p => {
+      const w = Math.max(0, p[1] / scale * 100).toFixed(2);
+      html += `<div class="chunk" style="width:${w}%; background:${p[2]};" title="${p[0]}: ${fmtEur(p[1])}"></div>`;
+    });
+    return html + `</div>`;
+  }
+
+  function legendHTML(parts) {
+    return `<div class="legend">` + parts.map(p =>
+      `<span><span class="dot" style="background:${p[2]};"></span>${p[0]} <strong style="color: var(--text);">${fmtEur(p[1])}</strong></span>`
+    ).join("") + `</div>`;
+  }
+
   // --- Interactive finance calculator (80 m2, La Latina) ---
   function buildFinance() {
     document.getElementById("fin-inputs").innerHTML = `
-      <label>Premises price: <input type="range" id="fin-pre" min="2200" max="4200" step="50" value="4200"> <span id="fin-pre-v"></span></label>
+      <label>Premises price: <input type="range" id="fin-pre" min="500" max="4200" step="50" value="4200"> <span id="fin-pre-v"></span></label>
       <label>Traspaso price: <input type="range" id="fin-tra" min="0" max="600" step="10" value="500"> <span id="fin-tra-v"></span></label>
       <label>Loan 1 rate: <input type="range" id="fin-r1" min="3.5" max="6" step="0.1" value="4.8"> <span id="fin-r1-v"></span></label>
-      <label>Loan 2 rate: <input type="range" id="fin-r2" min="5" max="10" step="0.1" value="8.5"> <span id="fin-r2-v"></span></label>`;
+      <label>Loan 2 rate: <input type="range" id="fin-r2" min="5" max="10" step="0.1" value="8.5"> <span id="fin-r2-v"></span></label>
+      <label style="color: var(--purple);"><input type="checkbox" id="fin-bed" style="accent-color: var(--purple);"> Owner's bedroom — mixed use (studio + legal dwelling corner)</label>`;
     ["fin-pre", "fin-tra", "fin-r1", "fin-r2"].forEach(id =>
       document.getElementById(id).addEventListener("input", finUpdate));
+    document.getElementById("fin-bed").addEventListener("change", finUpdate);
     finUpdate();
   }
 
@@ -690,6 +772,7 @@
     const tra = parseInt(document.getElementById("fin-tra").value, 10);
     const r1 = parseFloat(document.getElementById("fin-r1").value);
     const r2 = parseFloat(document.getElementById("fin-r2").value);
+    const bed = document.getElementById("fin-bed").checked;
     document.getElementById("fin-pre-v").textContent = pre.toLocaleString("es-ES") + " €/m² → " + fmtEur(pre * FIN_SIZE);
     document.getElementById("fin-tra-v").textContent = tra.toLocaleString("es-ES") + " €/m² → " + fmtEur(tra * FIN_SIZE);
     document.getElementById("fin-r1-v").textContent = r1.toFixed(1).replace(".", ",") + "% fixed";
@@ -697,10 +780,11 @@
 
     const price = pre * FIN_SIZE;
     const itp = price * 0.06;
-    const refurbSub = FIN_REFURB.reduce((s, x) => s + x[1], 0);
+    const works = bed ? FIN_REFURB.concat(FIN_BED_WORKS) : FIN_REFURB;
+    const refurbSub = works.reduce((s, x) => s + x[1], 0);
     const contingency = Math.round(refurbSub * 0.10 / 100) * 100;
     const refurbTotal = refurbSub + contingency;
-    const part1 = price + itp + FIN_NOTARY + refurbTotal;
+    const part1 = price + itp + FIN_NOTARY + refurbTotal + (bed ? FIN_BED_FEES : 0);
 
     const traspasoPrice = tra * FIN_SIZE;
     const part2a = traspasoPrice + FIN_DD + FIN_TITULARITY;
@@ -711,23 +795,29 @@
 
     const l1P = price * 0.70;
     const a1 = annuity(l1P, r1 / 100, 240);
-    const l2P = Math.ceil((refurbTotal + part2a + FIN_NOTARY) / 10000) * 10000;
+    const eq1 = price + itp + FIN_NOTARY - l1P;   // Day 1 cash at the notary
+    const step2Cost = refurbTotal + (bed ? FIN_BED_FEES : 0);
+    const l2Used = step2Cost + part2a;            // what Loan 2 actually funds
+    const l2P = Math.ceil(l2Used / 10000) * 10000; // requested, rounded up to 10k
     const a2 = annuity(l2P, r2 / 100, 84);
-    const l2P_B = Math.ceil((refurbTotal + part2b + FIN_NOTARY) / 10000) * 10000;
+    const l2UsedB = step2Cost + part2b;
+    const l2P_B = Math.ceil(l2UsedB / 10000) * 10000;
     const a2b = annuity(l2P_B, r2 / 100, 84);
-    const equityA = part1 + part2a - l1P - l2P;
-    const equityB = part1 + part2b - l1P - l2P_B;
+    const equityA = eq1;   // all out-of-pocket cash is at signing; steps 2-3 are loan-financed
+    const equityB = eq1;
 
     const part1Rows = [
       { k: "section", l: "Acquisition" },
       { l: "Purchase price — " + FIN_SIZE + " m² × " + pre.toLocaleString("es-ES") + " €/m² (La Latina range 2,200-4,200)", a: fmtEur(price) },
       { l: "ITP property transfer tax (6%, Comunidad de Madrid, private seller)", a: fmtEur(itp) },
       { l: "Notary + property registry (escritura, inscripción)", a: fmtEur(FIN_NOTARY) },
-      { k: "section", l: "Refurbishment — shell to dance studio" },
-      ...FIN_REFURB.map(x => ({ l: x[0], a: fmtEur(x[1]) })),
+      ...(bed ? [{ l: "Compatibility-of-uses report + partial change of use (mixed-use variant)", a: fmtEur(FIN_BED_FEES) }] : []),
+      { k: "section", l: "Refurbishment — shell to dance studio" + (bed ? " with owner's dwelling corner" : "") },
+      ...works.map(x => ({ l: x[0], a: fmtEur(x[1]) })),
       { k: "sub", l: "Works subtotal", a: fmtEur(refurbSub) },
       { l: "Contingency (10% of works)", a: fmtEur(contingency) },
-      { k: "total", l: "Part 1 total — buying the premises, studio-ready", a: fmtEur(part1) },
+      { k: "total", l: "Part 1 total — buying the premises, " + (bed ? "studio + bedroom ready" : "studio-ready"), a: fmtEur(part1) },
+      { l: "Own equity needed at signing — price + taxes + notary, minus Loan 1 (banks never finance the tax or fees)", a: fmtEur(eq1) },
     ];
     const part2aRows = [
       { k: "section", l: "Option A — buying a traspaso (existing school)" },
@@ -735,11 +825,13 @@
       { l: "Due diligence: lawyer, accounts and liabilities review", a: fmtEur(FIN_DD) },
       { l: "Licence change of ownership (Ayuntamiento) + gestoría", a: fmtEur(FIN_TITULARITY) },
       { k: "total", l: "Part 2A total — business via traspaso", a: fmtEur(part2a) },
+      { l: "Own equity needed at this step — assumed fully covered by Loan 2", a: "0 €" },
     ];
     const part2bRows = [
       { k: "section", l: "Option B — creating a new licence (own school)" },
       ...FIN_PART2B.map(x => ({ l: x[0], a: fmtEur(x[1]) })),
       { k: "total", l: "Part 2B total — business from scratch", a: fmtEur(part2b) },
+      { l: "Own equity needed at this step — assumed fully covered by a smaller Loan 2 (" + fmtEur(l2P_B) + ")", a: "0 €" },
     ];
     const runningRows = [
       { k: "section", l: "Running costs (both options)" },
@@ -757,7 +849,8 @@
       { k: "sub", l: "Total repaid", a: fmtEur(a1.total) },
       { k: "section", l: "Loan 2 — business loan for refurbishment + traspaso" },
       { l: "Available from: banks' SME lines (e.g. ICO-backed business loans, 50k-100k typical)", a: "" },
-      { l: "Amount (works + traspaso + notary, rounded up to 10k)", a: fmtEur(l2P) },
+      { l: "Amount requested (works + business, rounded up to 10k)", a: fmtEur(l2P) },
+      { k: "sub", l: "Actually used for the project — the rounding surplus stays as liquidity", a: fmtEur(l2Used) },
       { l: "Interest rate: " + r2.toFixed(1).replace(".", ",") + "% · term: 7 years (84 months)", a: "" },
       { l: "Monthly repayment", a: fmtEur(a2.pay) + "/mo" },
       { l: "Total interest over the life of the loan", a: fmtEur(a2.interest) },
@@ -769,21 +862,69 @@
       { k: "section", l: "Summary (live)" },
       { l: "Total project cost — premises + traspaso (Option A)", a: fmtEur(part1 + part2a) },
       { l: "Total project cost — premises + new licence (Option B)", a: fmtEur(part1 + part2b) },
-      { l: "Own equity needed — Option A (project minus the two loans)", a: fmtEur(equityA) },
-      { l: "Own equity needed — Option B", a: fmtEur(equityB) },
+      { l: "Own equity needed — Day 1 cash at signing (both options)", a: fmtEur(eq1) },
+      { l: "Option B requests a smaller Loan 2 (lower monthly, same Day-1 equity)", a: fmtEur(l2P_B) },
+      ...(bed ? [{ l: "Mixed-use variant: the dwelling corner adds " + fmtEur(FIN_BED_FEES + FIN_BED_WORKS.reduce((s, x) => s + x[1], 0) * 1.10) + " incl. contingency — Urbanismo approval required (see Legal & Regulatory)", a: "" }] : []),
       { l: "Loan 2 fully repaid at year 7; Loan 1 at year 20", a: "" },
       { l: price <= 500000 ? "Premises purchase price — under the 500,000 € budget cap" : "Premises purchase price — OVER the 500,000 € budget cap", a: fmtEur(price) },
     ];
 
+    const projectA = part1 + part2a;
+    const goParts = [
+      ["Premises", price, "#8a6a56"],
+      ["Taxes + notary", itp + FIN_NOTARY, "#b0705f"],
+      ["Works" + (bed ? " + bedroom" : ""), refurbTotal + (bed ? FIN_BED_FEES : 0), "#c29860"],
+      ["Business (traspaso)", part2a, "#7b5aa7"],
+    ];
+    const fromParts = [
+      ["Loan 1 — mortgage", l1P, "#7b5aa7"],
+      ["Loan 2 — SME/ICO", l2Used, "#a78bba"],
+      ["Own equity (Day 1)", equityA, "#8a6a56"],
+    ];
+    const step1Cost = price + itp + FIN_NOTARY;
+
     document.getElementById("fin-body").innerHTML = `
+      <div class="subact">The project at a glance (Option A — traspaso)</div>
+      <div class="xbar-label">Where the money goes — ${fmtEur(projectA)}</div>
+      ${stackBar(projectA, goParts)}
+      ${legendHTML(goParts)}
+      <div class="xbar-label">Where the money comes from</div>
+      ${stackBar(projectA, fromParts)}
+      ${legendHTML(fromParts)}
+      <div class="subact">Own equity — step by step</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-title">Step 1 · Buy the premises</div>
+          <div class="step-line">Cost at the notary: <strong>${fmtEur(step1Cost)}</strong></div>
+          <div class="step-line">Loan 1 (70% mortgage): <strong>${fmtEur(l1P)}</strong></div>
+          <div class="step-eq">${fmtEur(eq1)} <small>equity at signing — price, taxes and notary minus the mortgage</small></div>
+          ${stackBar(step1Cost, [["Loan 1", l1P, "#7b5aa7"], ["Equity", eq1, "#8a6a56"]])}
+        </div>
+        <div class="step">
+          <div class="step-title">Step 2 · Refurbish${bed ? " + bedroom" : ""}</div>
+          <div class="step-line">Works${bed ? " + mixed-use fees" : ""}: <strong>${fmtEur(step2Cost)}</strong></div>
+          <div class="step-line">Funded by Loan 2 (SME/ICO)</div>
+          <div class="step-eq">0 € <small>equity at this step — assumed fully loan-financed</small></div>
+          ${stackBar(step2Cost, [["Loan 2", step2Cost, "#a78bba"]])}
+        </div>
+        <div class="step">
+          <div class="step-title">Step 3 · Set up the business</div>
+          <div class="step-line">Option A — traspaso: <strong>${fmtEur(part2a)}</strong></div>
+          <div class="step-line">Option B — new licence: <strong>${fmtEur(part2b)}</strong> (Loan 2 shrinks to ${fmtEur(l2P_B)})</div>
+          <div class="step-eq">0 € <small>equity at this step — assumed fully loan-financed</small></div>
+          ${stackBar(Math.max(part2a, part2b), [["Traspaso (A)", part2a, "#7b5aa7"], ["New licence (B)", part2b, "#a78bba"]])}
+        </div>
+      </div>
+      <p class="fin-note">All your equity is concentrated at Step 1: banks finance 70% of the purchase price, but never the ITP tax or notary fees. Steps 2-3 assume Loan 2 covers them in full — if your bank only finances part of an SME project, add the difference to your equity. Loan 2's 10k rounding gives a small buffer already.</p>
       <div class="subact">Part 1 — Buying the premises</div>${finTable(part1Rows)}
       <div class="subact">Part 2A — Buying a traspaso</div>${finTable(part2aRows)}
       <div class="subact">Part 2B — Creating a new licence</div>${finTable(part2bRows)}
       <div class="subact">Running costs</div>${finTable(runningRows)}
-      <p class="fin-note">Teacher pay is excluded: freelance teachers in Madrid charge per class, so it scales with the timetable you run.</p>
+      <p class="fin-note">Teacher pay is excluded: freelance teachers in Madrid charge per class, so it scales with the timetable you run.${bed ? " Mixed use: insurance must be split (home + business) and IBI will be recalculated after the change of use." : ""}</p>
       <div class="subact">Financing — two separate loans</div>${finTable(loanRows)}
+      <div class="subact">Best loan routes — how to finance each part</div>${finTable(LOAN_ROUTES)}
       <div class="subact">Summary</div>${finTable(summaryRows)}
-      <p class="fin-note">Indicative estimates (2026-11-02) for framing and negotiation, not quotes. Get formal offers: mortgage quotes from at least two banks, plus an ICO-backed SME loan quote.</p>`;
+      <p class="fin-note">Indicative estimates (2026-11-02) for framing and negotiation, not quotes. Get formal offers: mortgage quotes from at least two banks, plus an ICO-backed SME loan quote. For the mixed-use variant, make any purchase offer conditional on an architect's compatibility report and Urbanismo viability.</p>`;
   }
 
   // --- Venue explorer: neighborhood prices, platforms ---
