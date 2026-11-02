@@ -1,8 +1,11 @@
 # Status — read me first
 
 ## Current state
-(2026-11-02) Setup phase. Repository structure created. Next: fill in
-the business brief and preferences with the assistant.
+(2026-11-02) Business direction set: acquire a local plus the running
+dance business in Central Madrid as one packaged deal. Venue options
+researched (dashboard Act III); legal deal structure and due-diligence
+checklist captured (dashboard Legal & Regulatory card). Next: verify
+Milanuncios listings from Spain, shortlist, and engage a Spanish lawyer.
 
 ## Next steps
 1. Fill PREFERENCES/preferences.md and PREFERENCES/context.md

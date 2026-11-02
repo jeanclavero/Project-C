@@ -143,6 +143,36 @@
   .dancer .status { font-size: 0.72rem; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.15rem; }
   .dancer .status.active { color: var(--purple); }
   .dancer .note { color: var(--muted); font-size: 0.78rem; font-style: italic; margin-top: 0.5rem; }
+  .dancer.wide {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 1.75rem;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .dancer.wide .disc { margin: 0; flex: 0 0 108px; }
+  .dancer.wide .body { flex: 1; }
+  .checklist { margin-top: 0.85rem; }
+  .checklist li {
+    list-style: none;
+    padding-left: 1.3em;
+    position: relative;
+    margin-bottom: 0.55rem;
+    font-size: 0.84rem;
+    color: var(--muted);
+  }
+  .checklist li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.42em;
+    width: 0.5em;
+    height: 0.5em;
+    transform: rotate(45deg);
+    background: var(--purple);
+    opacity: 0.55;
+  }
+  .checklist strong { color: var(--text); font-weight: 600; }
 
   .options {
     display: grid;
@@ -232,8 +262,8 @@
   <div class="act">Act II · The Dances</div>
   <div class="company" id="categories"></div>
 
-  <div class="act">Act III · The Venue Hunt — dance studios for sale in Central Madrid</div>
-  <p class="subtitle" style="margin-bottom: 1.25rem;">Researched 2026-11-02. Listings move fast — verify availability and price directly. Milanuncios only opens from within Spain.</p>
+  <div class="act">Act III · The Venue Hunt — premises + running dance business in Central Madrid</div>
+  <p class="subtitle" style="margin-bottom: 1.25rem;">Objective: buy the local and the existing business (teachers, students, licences, brand) together as one autonomous economic unit. Researched 2026-11-02 — listings move fast, verify availability and price directly. Milanuncios only opens from within Spain.</p>
   <div class="options" id="venue-options"></div>
 
   <footer>
@@ -248,12 +278,17 @@
     { name: "Finance & Accounting",     value: 0,  note: "No bookkeeping, invoicing, or banking set up yet." },
     { name: "Sales & Customers",        value: 0,  note: "No pipeline, CRM, or first customers yet." },
     { name: "Service Delivery",         value: 0,  note: "No offering defined or delivered yet." },
-    { name: "Legal & Regulatory",       value: 0,  note: "No legal structure, contracts, or compliance yet." },
+    { name: "Legal & Regulatory",       value: 5,  note: "Deal structure for buying premises + running business defined. Checklist below — confirm with a Spanish lawyer before signing.", checklist: [
+      { t: "Two simultaneous agreements", d: "Compraventa of the premises: escritura publica before a notary and inscription in the Registro de la Propiedad. Acquisition of the business: municipal licences, brand, client list, staff, furniture and stock. Usually negotiated as one integrated process." },
+      { t: "Opening & activity licence", d: "Confirm all municipal licences are valid and up to date with current regulations; file the cambio de titularidad (licence ownership change) at the Ayuntamiento when signing." },
+      { t: "Hidden debts — sucesión de empresa", d: "Acquiring a live economic unit can inherit labour obligations (contracted staff) and fiscal liabilities of the previous owner. Run due diligence beforehand and sign exoneration clauses for past debts." },
+      { t: "Special taxation", d: "Premises: subject to IVA if the seller is a business/professional, or ITP if a private individual. Transferring the business as a whole can be outside the scope of IVA under Art. 7.1 Ley del IVA when it forms an autonomous economic unit (unidad económica autónoma) able to operate on its own — structuring premises + business together changes the tax treatment." },
+    ] },
     { name: "Operations & Processes",   value: 0,  note: "No repeatable processes defined yet." },
     { name: "Tech & Software",          value: 10, note: "Project C workspace set up with AI assistant tooling." },
     { name: "HR",                       value: 0,  note: "No hiring, contracts, or policies yet." },
     { name: "Marketing & Brand",        value: 0,  note: "No brand, website, or channels yet." },
-    { name: "Physical Assets",          value: 5,  note: "Researching dance studio options in Central Madrid — see Act III." },
+    { name: "Physical Assets",          value: 5,  note: "Hunting a local plus running dance business in Central Madrid, as one packaged deal — see Act III." },
   ];
 
   const LAST_UPDATED = "2026-11-02";
@@ -261,15 +296,15 @@
   // Venue options researched 2026-11-02. tag: TRASPASO = running business for sale,
   // LOCAL = commercial property, MARKETPLACE = browse more listings, RENTAL = alternative.
   const OPTIONS = [
-    { tag: "Traspaso", name: "Academia de baile in Barrio de Salamanca (Ref. 01985)", desc: "Running dance academy 'in full swing' in one of Madrid's most sought-after districts — central, well connected, affluent clientele.", price: "Price on request", link: "https://www.milanuncios.com/traspasos/academia-baile.htm" },
-    { tag: "Traspaso", name: "Licensed dance/theatre venue, Madrid (dance licence since 2008, no expiry)", desc: "Business transfer of an established dance school ('16 years operating'). Licence covers baile, danza, teatro, circo; rent approx. 2,400 EUR/month.", price: "Traspaso price on request", link: "https://www.milanuncios.com/traspasos-en-madrid/escuela-baile.htm" },
-    { tag: "Traspaso", name: "Fitted-out hall with fixed clientele, Madrid", desc: "Transfer of a fully furnished hall with loyal clientele, advertised as suitable for dance classes and personal training from day one.", price: "On request (Milanuncios)", link: "https://www.milanuncios.com/traspasos-en-madrid/academia-baile.htm" },
-    { tag: "Local", name: "Commercial premises for sale, District Centro (Idealista)", desc: "Buy and fit out your own studio. Filter for ground-floor locals with ventilation and the required 'uso' licence; a sprung floor and mirrors are added by you.", price: "Locals in Centro from approx. 174,000 EUR", link: "https://www.idealista.com/venta-locales/madrid/centro/" },
-    { tag: "Local", name: "212 commercial premises in Centro (Fotocasa)", desc: "Broadest current inventory of locals for sale in Madrid's central district, across Sol, Malasana, La Latina, Lavapies and Justicia.", price: "Various", link: "https://www.fotocasa.es/es/comprar/locales/madrid-capital/centro/l" },
-    { tag: "Local", name: "116 premises in Centro (Pisos.com)", desc: "Cross-agency listing aggregator for Centro; useful to compare price per m2 before approaching owners.", price: "From approx. 174,000 EUR", link: "https://www.pisos.com/venta/local_comercial-madrid_capital_centro/" },
-    { tag: "Marketplace", name: "BusinessesForSale — Madrid (32 listings)", desc: "International business-for-sale marketplace; includes leisure and education businesses in the Madrid area.", price: "Various", link: "https://spain.businessesforsale.com/spanish/search/businesses-for-sale-in-madrid-spain" },
-    { tag: "Marketplace", name: "Tablon de anuncios — Escuela de baile transfers, Madrid", desc: "Spanish classifieds board with a dedicated dance-school transfer section for the Madrid region; currently dominated by children's schools but worth watching.", price: "Various", link: "https://www.tablondeanuncios.com/traspasos-venta-negocios-en-madrid/escuela-de-baile.htm" },
-    { tag: "Marketplace", name: "Negocius — dance business transfers, Madrid province", desc: "Business transfer portal; has had dance academies (80-350 m2, equipped) in the Madrid region, though recent listings skew to the suburbs and some are dated.", price: "25,000 - 100,000 EUR (historic)", link: "https://es.negocius.com/traspaso-baile-madrid_nl_ttr_xtap_p28.html" },
+    { tag: "Traspaso", name: "Academia de baile in Barrio de Salamanca (Ref. 01985)", desc: "Running dance academy 'in full swing' in one of Madrid's most sought-after districts. Ask the owner to package business + premises as one deal — that keeps teachers and students in place and unlocks the Art. 7.1 LIVA tax treatment.", price: "Price on request", link: "https://www.milanuncios.com/traspasos/academia-baile.htm" },
+    { tag: "Traspaso", name: "Licensed dance/theatre venue, Madrid (dance licence since 2008, no expiry)", desc: "Established dance school, 16 years operating; licence covers baile, danza, teatro, circo; rent approx. 2,400 EUR/month. First item for the due-diligence list: verify the licence is current and budget the cambio de titularidad at the Ayuntamiento.", price: "Traspaso price on request", link: "https://www.milanuncios.com/traspasos-en-madrid/escuela-baile.htm" },
+    { tag: "Traspaso", name: "Fitted-out hall with fixed clientele, Madrid", desc: "Fully furnished hall with loyal clientele, dance-ready from day one. If the hall is rented, confirm whether the landlord will sell the premises or grant a long lease before paying for the traspaso.", price: "On request (Milanuncios)", link: "https://www.milanuncios.com/traspasos-en-madrid/academia-baile.htm" },
+    { tag: "Local", name: "Commercial premises for sale, District Centro (Idealista)", desc: "Inventory of premises for sale in central Madrid. Target locals already holding an academy/dance 'uso' licence: a licensed local plus the running school bought as one unit avoids a costly change-of-use process and fits the combined-deal structure.", price: "Locals in Centro from approx. 174,000 EUR", link: "https://www.idealista.com/venta-locales/madrid/centro/" },
+    { tag: "Local", name: "212 commercial premises in Centro (Fotocasa)", desc: "Broadest inventory of premises for sale across Sol, Malasana, La Latina, Lavapies and Justicia. Filter for ground-floor locals with ventilation and existing leisure/academy use licences.", price: "Various", link: "https://www.fotocasa.es/es/comprar/locales/madrid-capital/centro/l" },
+    { tag: "Local", name: "116 premises in Centro (Pisos.com)", desc: "Cross-agency aggregator for Centro; use it to compare price per m2 and to spot premises sold together with a running business (venta de local con negocio en marcha).", price: "From approx. 174,000 EUR", link: "https://www.pisos.com/venta/local_comercial-madrid_capital_centro/" },
+    { tag: "Marketplace", name: "BusinessesForSale — Madrid (32 listings)", desc: "International business-for-sale marketplace, including leisure and education businesses. Look for listings marked 'premises included' (local en propiedad) — those are the packaged deals.", price: "Various", link: "https://spain.businessesforsale.com/spanish/search/businesses-for-sale-in-madrid-spain" },
+    { tag: "Marketplace", name: "Tablon de anuncios — Escuela de baile transfers, Madrid", desc: "Spanish classifieds board with a dedicated dance-school transfer section for the Madrid region; currently dominated by children's schools but worth watching for packaged premises + business offers.", price: "Various", link: "https://www.tablondeanuncios.com/traspasos-venta-negocios-en-madrid/escuela-de-baile.htm" },
+    { tag: "Marketplace", name: "Negocius — dance business transfers, Madrid province", desc: "Business transfer portal with past dance academies (80-350 m2, equipped) in the Madrid region. Most are traspaso-only (business without premises) — if the local is rented, a separate premises purchase is needed to reach the combined structure.", price: "25,000 - 100,000 EUR (historic)", link: "https://es.negocius.com/traspaso-baile-madrid_nl_ttr_xtap_p28.html" },
     { tag: "Rental", name: "Alarde Danza — studio rental, Central Madrid (lean alternative)", desc: "If buying is premature: rent fully equipped dance studios by the hour in central Madrid and test your concept before committing capital.", price: "By the hour", link: "https://alarde.com/salas-alarde/" },
   ];
 
@@ -389,14 +424,27 @@
     const el = document.createElement("div");
     el.className = "dancer";
     el.id = "cat-" + i;
-    el.innerHTML = `
+    const discHTML = `
       <div class="disc" style="--c:${colorFor(cat.value)}">
         <span class="num">${cat.value}%</span>
-      </div>
-      <div class="name">${cat.name}</div>
-      <div class="status ${cat.value > 0 ? "active" : ""}">${statusLabel(cat.value)}</div>
-      <div class="note">${cat.note}</div>
-    `;
+      </div>`;
+    if (Array.isArray(cat.checklist)) {
+      el.classList.add("wide");
+      el.innerHTML = `${discHTML}
+        <div class="body">
+          <div class="name">${cat.name}</div>
+          <div class="status ${cat.value > 0 ? "active" : ""}">${statusLabel(cat.value)}</div>
+          <div class="note">${cat.note}</div>
+          <ul class="checklist">
+            ${cat.checklist.map(it => `<li><strong>${it.t}</strong> — ${it.d}</li>`).join("")}
+          </ul>
+        </div>`;
+    } else {
+      el.innerHTML = `${discHTML}
+        <div class="name">${cat.name}</div>
+        <div class="status ${cat.value > 0 ? "active" : ""}">${statusLabel(cat.value)}</div>
+        <div class="note">${cat.note}</div>`;
+    }
     container.appendChild(el);
     requestAnimationFrame(() => setTimeout(() => {
       el.querySelector(".disc").style.setProperty("--p", cat.value);
