@@ -144,6 +144,44 @@
   .dancer .status.active { color: var(--purple); }
   .dancer .note { color: var(--muted); font-size: 0.78rem; font-style: italic; margin-top: 0.5rem; }
 
+  .options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .option {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.1rem 1.25rem;
+    box-shadow: 0 4px 14px rgba(120, 95, 70, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .option:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(120, 95, 70, 0.14); }
+  .option .tag {
+    display: inline-block;
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--purple);
+    border: 1px solid var(--purple);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+  .option .opt-name { font-weight: 600; font-size: 0.95rem; line-height: 1.35; }
+  .option .opt-desc { color: var(--muted); font-size: 0.82rem; margin-top: 0.4rem; }
+  .option .opt-price { color: var(--brown); font-size: 0.85rem; font-weight: 600; margin-top: 0.5rem; }
+  .option a {
+    display: inline-block;
+    margin-top: 0.7rem;
+    color: var(--purple);
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--purple);
+  }
+  .option a:hover { color: #6d4a9e; }
+
   footer {
     margin-top: 2.5rem;
     color: var(--muted);
@@ -194,6 +232,10 @@
   <div class="act">Act II · The Dances</div>
   <div class="company" id="categories"></div>
 
+  <div class="act">Act III · The Venue Hunt — dance studios for sale in Central Madrid</div>
+  <p class="subtitle" style="margin-bottom: 1.25rem;">Researched 2026-11-02. Listings move fast — verify availability and price directly. Milanuncios only opens from within Spain.</p>
+  <div class="options" id="venue-options"></div>
+
   <footer>
     <p class="quote">"Every performance begins at the barre."</p>
     <p>Data source: dashboard/index.html — edit the CATEGORIES list to update values. Last updated: <span id="last-updated"></span></p>
@@ -211,10 +253,25 @@
     { name: "Tech & Software",          value: 10, note: "Project C workspace set up with AI assistant tooling." },
     { name: "HR",                       value: 0,  note: "No hiring, contracts, or policies yet." },
     { name: "Marketing & Brand",        value: 0,  note: "No brand, website, or channels yet." },
-    { name: "Physical Assets",          value: 0,  note: "No equipment or premises needed yet." },
+    { name: "Physical Assets",          value: 5,  note: "Researching dance studio options in Central Madrid — see Act III." },
   ];
 
   const LAST_UPDATED = "2026-11-02";
+
+  // Venue options researched 2026-11-02. tag: TRASPASO = running business for sale,
+  // LOCAL = commercial property, MARKETPLACE = browse more listings, RENTAL = alternative.
+  const OPTIONS = [
+    { tag: "Traspaso", name: "Academia de baile in Barrio de Salamanca (Ref. 01985)", desc: "Running dance academy 'in full swing' in one of Madrid's most sought-after districts — central, well connected, affluent clientele.", price: "Price on request", link: "https://www.milanuncios.com/traspasos/academia-baile.htm" },
+    { tag: "Traspaso", name: "Licensed dance/theatre venue, Madrid (dance licence since 2008, no expiry)", desc: "Business transfer of an established dance school ('16 years operating'). Licence covers baile, danza, teatro, circo; rent approx. 2,400 EUR/month.", price: "Traspaso price on request", link: "https://www.milanuncios.com/traspasos-en-madrid/escuela-baile.htm" },
+    { tag: "Traspaso", name: "Fitted-out hall with fixed clientele, Madrid", desc: "Transfer of a fully furnished hall with loyal clientele, advertised as suitable for dance classes and personal training from day one.", price: "On request (Milanuncios)", link: "https://www.milanuncios.com/traspasos-en-madrid/academia-baile.htm" },
+    { tag: "Local", name: "Commercial premises for sale, District Centro (Idealista)", desc: "Buy and fit out your own studio. Filter for ground-floor locals with ventilation and the required 'uso' licence; a sprung floor and mirrors are added by you.", price: "Locals in Centro from approx. 174,000 EUR", link: "https://www.idealista.com/venta-locales/madrid/centro/" },
+    { tag: "Local", name: "212 commercial premises in Centro (Fotocasa)", desc: "Broadest current inventory of locals for sale in Madrid's central district, across Sol, Malasana, La Latina, Lavapies and Justicia.", price: "Various", link: "https://www.fotocasa.es/es/comprar/locales/madrid-capital/centro/l" },
+    { tag: "Local", name: "116 premises in Centro (Pisos.com)", desc: "Cross-agency listing aggregator for Centro; useful to compare price per m2 before approaching owners.", price: "From approx. 174,000 EUR", link: "https://www.pisos.com/venta/local_comercial-madrid_capital_centro/" },
+    { tag: "Marketplace", name: "BusinessesForSale — Madrid (32 listings)", desc: "International business-for-sale marketplace; includes leisure and education businesses in the Madrid area.", price: "Various", link: "https://spain.businessesforsale.com/spanish/search/businesses-for-sale-in-madrid-spain" },
+    { tag: "Marketplace", name: "Tablon de anuncios — Escuela de baile transfers, Madrid", desc: "Spanish classifieds board with a dedicated dance-school transfer section for the Madrid region; currently dominated by children's schools but worth watching.", price: "Various", link: "https://www.tablondeanuncios.com/traspasos-venta-negocios-en-madrid/escuela-de-baile.htm" },
+    { tag: "Marketplace", name: "Negocius — dance business transfers, Madrid province", desc: "Business transfer portal; has had dance academies (80-350 m2, equipped) in the Madrid region, though recent listings skew to the suburbs and some are dated.", price: "25,000 - 100,000 EUR (historic)", link: "https://es.negocius.com/traspaso-baile-madrid_nl_ttr_xtap_p28.html" },
+    { tag: "Rental", name: "Alarde Danza — studio rental, Central Madrid (lean alternative)", desc: "If buying is premature: rent fully equipped dance studios by the hour in central Madrid and test your concept before committing capital.", price: "By the hour", link: "https://alarde.com/salas-alarde/" },
+  ];
 
   function colorFor(value) {
     if (value <= 0)  return "#cbb8a4";   // light taupe: dormant
@@ -350,6 +407,21 @@
   document.getElementById("sum-started").textContent = started + " / " + CATEGORIES.length;
   document.getElementById("sum-empty").textContent = CATEGORIES.length - started;
   document.getElementById("last-updated").textContent = LAST_UPDATED;
+
+  // --- Act III: the venue hunt ---
+  const optionsBox = document.getElementById("venue-options");
+  OPTIONS.forEach(opt => {
+    const el = document.createElement("div");
+    el.className = "option";
+    el.innerHTML = `
+      <span class="tag">${opt.tag}</span>
+      <div class="opt-name">${opt.name}</div>
+      <div class="opt-desc">${opt.desc}</div>
+      <div class="opt-price">${opt.price}</div>
+      <a href="${opt.link}" target="_blank" rel="noopener">View listing</a>
+    `;
+    optionsBox.appendChild(el);
+  });
 </script>
 </body>
 </html>
