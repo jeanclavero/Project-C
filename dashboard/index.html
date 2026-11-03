@@ -50,6 +50,32 @@
   .rule::before, .rule::after { content: ""; flex: 1; height: 1px; background: var(--border); }
   .rule .gem { width: 8px; height: 8px; transform: rotate(45deg); background: var(--brown); opacity: 0.6; }
 
+  .next-step {
+    background: rgba(123, 90, 167, 0.07);
+    border: 1px solid var(--purple);
+    border-radius: 16px;
+    padding: 1.1rem 1.4rem;
+    margin: 0 auto 2.25rem;
+    max-width: 680px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text);
+    box-shadow: 0 4px 14px rgba(120, 95, 70, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .next-step:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(120, 95, 70, 0.14); }
+  .next-step .ns-tag {
+    display: block;
+    color: var(--purple);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .next-step strong { color: var(--purple); }
+
   .act {
     display: flex;
     align-items: center;
@@ -373,6 +399,11 @@
     <div class="rule"><span class="gem"></span></div>
   </header>
 
+  <div class="next-step" id="next-step" role="button" tabindex="0">
+    <span class="ns-tag">Next step — dive in</span>
+    <strong>Types of SME loans available in Madrid:</strong> what small businesses can get for <strong>buying commercial premises</strong> and for <strong>works, upgrades and other needs</strong> — lenders, rates, terms and public guarantees (ICO lines included). Click to open Finance &amp; Accounting.
+  </div>
+
   <div class="act">Act I · The Company</div>
   <div class="stage">
     <div class="ring-wrap">
@@ -408,24 +439,24 @@
 <script>
   // Edit this list to change the dashboard. value: 0-100.
   const CATEGORIES = [
-    { name: "Finance & Accounting",     value: 10, finance: true, note: "Initial cost plan and two-loan financing model for an 80 m² studio in La Latina — open this category." },
+    { name: "Finance & Accounting",     value: 15, finance: true, note: "Anchored on 35,000 € of Day-1 equity. Traspaso only (10k-100k €) in a rented venue (500-1,300 €/mo) with a rent-to-buy option on the local; commercial loan details appear only if the package exceeds the equity. Next up (front-page marker): types of SME loans available in Madrid — for buying commercial premises and for works/upgrades/other — open this category." },
     { name: "Sales & Customers",        value: 0,  note: "No pipeline, CRM, or first customers yet." },
     { name: "Service Delivery",         value: 0,  note: "No offering defined or delivered yet." },
-    { name: "Legal & Regulatory",       value: 5,  note: "Deal structure for buying premises + running business defined — open this category for the checklist. Confirm with a Spanish lawyer before signing.", checklist: [
-      { t: "Two simultaneous agreements", d: "Compraventa of the premises: escritura publica before a notary and inscription in the Registro de la Propiedad. Acquisition of the business: municipal licences, brand, client list, staff, furniture and stock. Usually negotiated as one integrated process." },
+    { name: "Legal & Regulatory",       value: 5,  note: "Deal structure for the traspaso-first route defined — open this category for the checklist. Confirm with a Spanish lawyer before signing.", checklist: [
+      { t: "Traspaso package + the lease", d: "Acquire the running business (teachers, students, brand, licences, equipment) as one package. The venue stays rented: the lease assignment (cesión del contrato) or a new rental contract needs the landlord's consent — negotiate the rent-to-buy option on the local at the same time (Finance & Accounting details the mechanism), so the eventual purchase is locked in before the goodwill is paid." },
       { t: "Opening & activity licence", d: "Confirm all municipal licences are valid and up to date with current regulations; file the cambio de titularidad (licence ownership change) at the Ayuntamiento when signing." },
       { t: "Hidden debts — sucesión de empresa", d: "Acquiring a live economic unit can inherit labour obligations (contracted staff) and fiscal liabilities of the previous owner. Run due diligence beforehand and sign exoneration clauses for past debts." },
-      { t: "Special taxation", d: "Premises: subject to IVA if the seller is a business/professional, or ITP if a private individual. Transferring the business as a whole can be outside the scope of IVA under Art. 7.1 Ley del IVA when it forms an autonomous economic unit (unidad económica autónoma) able to operate on its own — structuring premises + business together changes the tax treatment." },
-      { t: "Housing programs don't apply to locals", d: "Mi Primera Vivienda / first-home mortgages and guarantees only cover residential dwellings (vivienda habitual); a commercial local cannot be financed through them. Living in a local without an approved cambio de uso is an infraction, and a change of use to dwelling would then bar the commercial activity licence. Legitimate route to living + studio: buy the local commercially plus a small flat separately — Mi Primera Vivienda can apply to the flat if you don't own a home." },
+      { t: "Special taxation", d: "A traspaso transmitted as an autonomous economic unit can be outside the scope of IVA under Art. 7.1 Ley del IVA; a goodwill-only transfer is usually subject to 21% IVA (recoverable if you register for IVA before the operation), and the rent carries 21% IVA. The later premises purchase: IVA if the seller is a business/professional, ITP (6% Comunidad de Madrid) if a private individual." },
+      { t: "Rent-to-buy (opción de compra) — the fine print", d: "The option is a contract separate from the lease: premium (prima), exercise window, purchase price and rent-credit terms all live in it. Register the option in the Registro de la Propiedad so it binds the landlord and any future buyer of the building — an unregistered option can be wiped out if the property changes hands. If the option is not exercised, the premium and the credited rent are usually forfeited. Rent carries 21% IVA; exercising the purchase is taxed as any purchase (ITP 6% Comunidad de Madrid if the landlord is a private seller). Confirm the drafting with a Spanish lawyer before signing." },
     ] },
     { name: "Operations & Processes",   value: 0,  note: "No repeatable processes defined yet." },
     { name: "Tech & Software",          value: 10, note: "Project C workspace set up with AI assistant tooling." },
     { name: "HR",                       value: 0,  note: "No hiring, contracts, or policies yet." },
     { name: "Marketing & Brand",        value: 0,  note: "No brand, website, or channels yet." },
-    { name: "Physical Assets",          value: 5,  venue: true, note: "Price explorers by neighborhood, marketplace links, and a sequencing recommendation — open this category.", venueIntro: "Objective: buy the local and the existing business (teachers, students, licences, brand) together as one autonomous economic unit. Budget cap: premises under 500,000 €. The explorers below show indicative price ranges per central neighborhood (estimates from listings observed 2026-11-02 — rough guides, not appraisals). Play with size and neighborhood, then hunt live offers on the platform links.", reco: "<strong>Recommendation: buy the premises first</strong>, with the business as a second step — unless a packaged business + premises deal appears within budget, which should always win.<br><br><strong>Why premises first:</strong> (1) under the 500,000 € cap, a suitable local is the scarcest asset in central Madrid — once owned, no landlord can hold the school's rent or sale price over you; (2) a traspaso's goodwill is anchored to its rented location — buy it first and its value is hostage to the landlord's willingness to sell, while rent (observed ~2,400 €/month) drains cash as you save; (3) in dance, students follow teachers — from premises you own you can recruit the teachers of a closing school and build your own client base at your own address; (4) a premises-first purchase is a simpler, cleaner transaction while you scout traspasos from a position of strength.<br><br><strong>The counter-case:</strong> if a school with premises-owning sellers appears within budget, buy both together as one autonomous economic unit (Art. 7.1 LIVA). The combined structure remains the ideal; sequencing only applies when no package exists." },
+    { name: "Physical Assets",          value: 5,  venue: true, note: "Price explorers by neighborhood, marketplace links, and the route recommendation — open this category.", venueIntro: "Objective (updated 2026-11-03): traspaso only — take over the running dance school in a rented venue (500-1,300 €/month), with a rent-to-buy option on the local negotiated upfront (Finance & Accounting details how it's carried out). The premises price explorers below are now a negotiation tool: they tell you whether the option's future purchase price is fair. Budget cap for the eventual purchase: 500,000 €. The explorers show indicative price ranges per central neighborhood (estimates from listings observed 2026-11-02 — rough guides, not appraisals).", reco: "<strong>Recommendation: traspaso only, with a rent-to-buy option on the local.</strong><br><br><strong>Why:</strong> (1) the financing anchor is 35,000 € of Day-1 equity (Finance & Accounting) — it covers the traspaso range (10,000-100,000 €) on its own or with a small commercial loan, while a premises purchase needs ~36% of the price in cash at signing before any works; (2) the school earns from day one — students follow teachers, and the traspaso keeps them; (3) the rent-to-buy option is the counter to the classic hostage risk of paying goodwill in someone else's building: part of the rent builds toward the purchase, and a registered option binds the landlord; (4) the option's exercise price is where the premises explorers below matter — use them to negotiate that price at signing, not at exercise." },
   ];
 
-  const LAST_UPDATED = "2026-11-02";
+  const LAST_UPDATED = "2026-11-03";
 
   // Venue options researched 2026-11-02. tag: TRASPASO = running business for sale,
   // LOCAL = commercial property, MARKETPLACE = browse more listings, RENTAL = alternative.
@@ -445,30 +476,18 @@
     { name: "Arganzuela (Atocha)",      pre: [2200, 4000], tra: [150, 400] },
   ];
 
-  // Interactive cost plan, modelled 2026-11-02: 80 m2 studio in La Latina.
-  // Slider defaults are the worst case (upper limits of the indicative ranges);
-  // every total recomputes automatically when the sliders move.
-  const FIN_INTRO = "Model: 80 m² studio in La Latina. Drag the sliders — every cost and financing total recomputes automatically. Defaults are the worst case (upper limits of the indicative ranges). Tick 'owner's bedroom' to model the mixed-use variant (studio with a legal dwelling corner). Loan math uses standard annuity formulas; figures rounded. Estimates for framing, not quotes.";
-  const FIN_SIZE = 80;
-  const FIN_NOTARY = 2000;
-  const FIN_DD = 2500;          // due diligence (lawyer, accounts review)
+  // Interactive finance model, modelled 2026-11-03. THE ANCHOR: 35,000 EUR of
+  // own equity available on Day 1. One route only: traspaso (10k-100k EUR) in
+  // a rented venue (500-1,300 EUR/month) with a rent-to-buy option on the
+  // local. If the Day-1 package fits inside the equity, no loan; if not, a
+  // commercial SME/ICO loan covers the gap.
+  const FIN_INTRO = "Starting point: <strong>35,000 € of own equity available on Day 1</strong>. One route: a traspaso only (10,000-100,000 €) in a rented venue (500-1,300 €/month) with a rent-to-buy option on the local negotiated upfront. If the package fits inside your equity, no loan is needed; if not, a commercial (SME/ICO) loan covers the gap. Drag the sliders — every figure recomputes. Estimates for framing, not quotes.";
+  const FIN_EQUITY = 35000;    // THE ANCHOR: own equity available on Day 1
+  const FIN_DD = 2500;         // due diligence (lawyer, accounts review)
   const FIN_TITULARITY = 1200; // licence change of ownership + gestoria
-  const FIN_BED_FEES = 4500;   // compatibility-of-uses report + partial change of use
-  const FIN_REFURB = [
-    ["Sprung floor + vinyl dance surface (80 m²)", 8000],
-    ["Wall mirrors with safety film", 3000],
-    ["Ballet barres (two walls)", 1200],
-    ["Soundproofing (insonorización)", 8000],
-    ["HVAC: air conditioning + ventilation", 4000],
-    ["Electrical + studio lighting", 2500],
-    ["Changing area, bathroom, general works, paint", 6500],
-    ["Architect project + licence processing", 3500],
-  ];
-  const FIN_PART2B = [
-    ["Technical project + licencia de apertura (declaración responsable)", 3000],
-    ["Ayuntamiento fees + activity insurance", 800],
-    ["Brand, website, launch marketing (client base from zero)", 6000],
-  ];
+  const FIN_REFRESH = 4000;    // refresh + rebrand of the acquired school (assumption)
+  const FIN_DEPOSIT_MONTHS = 2; // rental deposit / fianza, months of rent (assumption)
+  const FIN_LOAN_TERM = 84;    // commercial SME loan modelled at 7 years (typical 5-8)
   const FIN_RUNNING_BASE = [
     ["Community fees", 70],
     ["Utilities (electricity, water)", 250],
@@ -476,23 +495,6 @@
     ["Software / administration", 45],
     ["Cleaning", 120],
     ["Ongoing marketing", 150],
-  ];
-  const FIN_BED_WORKS = [
-    ["Bedroom partition, door, insulation (approx. 18 m²)", 3500],
-    ["Second bathroom (ensuite) for the dwelling corner", 7000],
-    ["Ventilation / natural-light solution for habitability", 2500],
-  ];
-  const LOAN_ROUTES = [
-    { k: "section", l: "Route 1 — commercial mortgage (the premises)" },
-    { l: "Applies to: buying the local. Even with a mixed-use project, the appraiser classifies it as commercial until a change of use is registered", a: "60-70% LTV" },
-    { l: "Banks: Santander, BBVA, CaixaBank, Bankinter, Sabadell · 10-20 years · ~3.8-4.8% fixed or Euríbor + 1.5-2%", a: "" },
-    { k: "section", l: "Route 2 — SME / ICO-backed business loan (works + business)" },
-    { l: "Applies to: refurbishment (incl. the bedroom conversion, presented inside the dance-studio project file), traspaso or new licence", a: "50k-100k" },
-    { l: "Banks' SME lines and ICO loans · 5-8 years · ~6.5-8.5% (ICO-backed can be lower)", a: "" },
-    { k: "section", l: "Route 3 — only if living centrally is essential: separate studio flat" },
-    { l: "A small flat (100k-150k in La Latina / Lavapiés) financed with a residential mortgage — Mi Primera Vivienda can apply if you don't own a home", a: "" },
-    { k: "section", l: "Not a route" },
-    { l: "Mi Primera Vivienda on the local itself: only covers residential dwellings — see Legal & Regulatory", a: "n/a" },
   ];
 
   function annuity(P, rate, months) {
@@ -665,6 +667,15 @@
   document.getElementById("sum-empty").textContent = CATEGORIES.length - started;
   document.getElementById("last-updated").textContent = LAST_UPDATED;
 
+  // Front-page next-step card opens the Finance & Accounting detail.
+  const nextStep = document.getElementById("next-step");
+  if (nextStep) {
+    nextStep.addEventListener("click", () => openDetail(0));
+    nextStep.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDetail(0); }
+    });
+  }
+
   // --- Category detail views ---
   const detailBox = document.getElementById("detail");
 
@@ -678,7 +689,7 @@
     let extra = "";
     if (Array.isArray(cat.checklist)) {
       extra = `
-        <div class="subact">Deal structure — buying premises + business</div>
+        <div class="subact">Deal structure — the traspaso route</div>
         <ul class="checklist">
           ${cat.checklist.map(it => `<li><strong>${it.t}</strong> — ${it.d}</li>`).join("")}
         </ul>`;
@@ -694,7 +705,7 @@
     } else if (cat.finance) {
       extra = `
         <p class="subtitle" style="text-align: left; margin-bottom: 1.25rem;">${FIN_INTRO}</p>
-        <div class="subact">Inputs — play with the prices and rates</div>
+        <div class="subact">Inputs — the equity anchor first, then stress-test</div>
         <div class="xp-inputs" id="fin-inputs"></div>
         <div id="fin-body"></div>`;
     } else {
@@ -753,178 +764,136 @@
     ).join("") + `</div>`;
   }
 
-  // --- Interactive finance calculator (80 m2, La Latina) ---
+  // --- Interactive finance calculator ---
+  // The anchor is the own-equity slider (default 35,000 EUR); the traspaso
+  // price and rent sliders drive everything else.
   function buildFinance() {
     document.getElementById("fin-inputs").innerHTML = `
-      <label>Premises price: <input type="range" id="fin-pre" min="500" max="4200" step="50" value="4200"> <span id="fin-pre-v"></span></label>
-      <label>Traspaso price: <input type="range" id="fin-tra" min="0" max="600" step="10" value="500"> <span id="fin-tra-v"></span></label>
-      <label>Loan 1 rate: <input type="range" id="fin-r1" min="3.5" max="6" step="0.1" value="4.8"> <span id="fin-r1-v"></span></label>
-      <label>Loan 2 rate: <input type="range" id="fin-r2" min="5" max="10" step="0.1" value="8.5"> <span id="fin-r2-v"></span></label>
-      <label style="color: var(--purple);"><input type="checkbox" id="fin-bed" style="accent-color: var(--purple);"> Owner's bedroom — mixed use (studio + legal dwelling corner)</label>`;
-    ["fin-pre", "fin-tra", "fin-r1", "fin-r2"].forEach(id =>
+      <label>Own equity (Day 1): <input type="range" id="fin-eq" min="10000" max="100000" step="1000" value="${FIN_EQUITY}"> <span id="fin-eq-v"></span></label>
+      <label>Traspaso price: <input type="range" id="fin-tp" min="10000" max="100000" step="1000" value="40000"> <span id="fin-tp-v"></span></label>
+      <label>Monthly rent: <input type="range" id="fin-rent" min="500" max="1300" step="50" value="900"> <span id="fin-rent-v"></span></label>
+      <label>Loan interest rate: <input type="range" id="fin-rate" min="5" max="10" step="0.1" value="7.5"> <span id="fin-rate-v"></span></label>`;
+    ["fin-eq", "fin-tp", "fin-rent", "fin-rate"].forEach(id =>
       document.getElementById(id).addEventListener("input", finUpdate));
-    document.getElementById("fin-bed").addEventListener("change", finUpdate);
     finUpdate();
   }
 
   function finUpdate() {
-    const pre = parseInt(document.getElementById("fin-pre").value, 10);
-    const tra = parseInt(document.getElementById("fin-tra").value, 10);
-    const r1 = parseFloat(document.getElementById("fin-r1").value);
-    const r2 = parseFloat(document.getElementById("fin-r2").value);
-    const bed = document.getElementById("fin-bed").checked;
-    document.getElementById("fin-pre-v").textContent = pre.toLocaleString("es-ES") + " €/m² → " + fmtEur(pre * FIN_SIZE);
-    document.getElementById("fin-tra-v").textContent = tra.toLocaleString("es-ES") + " €/m² → " + fmtEur(tra * FIN_SIZE);
-    document.getElementById("fin-r1-v").textContent = r1.toFixed(1).replace(".", ",") + "% fixed";
-    document.getElementById("fin-r2-v").textContent = r2.toFixed(1).replace(".", ",") + "%";
+    const eq = parseInt(document.getElementById("fin-eq").value, 10);
+    const tp = parseInt(document.getElementById("fin-tp").value, 10);
+    const rent = parseInt(document.getElementById("fin-rent").value, 10);
+    const rate = parseFloat(document.getElementById("fin-rate").value);
+    document.getElementById("fin-eq-v").textContent = fmtEur(eq) + " available on Day 1";
+    document.getElementById("fin-tp-v").textContent = fmtEur(tp);
+    document.getElementById("fin-rent-v").textContent = fmtEur(rent) + "/mo";
+    document.getElementById("fin-rate-v").textContent = rate.toFixed(1).replace(".", ",") + "%";
 
-    const price = pre * FIN_SIZE;
-    const itp = price * 0.06;
-    const works = bed ? FIN_REFURB.concat(FIN_BED_WORKS) : FIN_REFURB;
-    const refurbSub = works.reduce((s, x) => s + x[1], 0);
-    const contingency = Math.round(refurbSub * 0.10 / 100) * 100;
-    const refurbTotal = refurbSub + contingency;
-    const part1 = price + itp + FIN_NOTARY + refurbTotal + (bed ? FIN_BED_FEES : 0);
+    // --- Day 1: the traspaso package ---
+    const fixed = FIN_DD + FIN_TITULARITY + FIN_REFRESH;   // fixed package costs
+    const deposit = rent * FIN_DEPOSIT_MONTHS;
+    const pkg = tp + fixed + deposit;                      // the whole Day-1 commitment
+    const needsLoan = pkg > eq;
+    const gap = needsLoan ? pkg - eq : 0;
+    const loan = needsLoan ? Math.ceil(gap / 1000) * 1000 : 0; // rounded up to 1k
+    const a = annuity(loan, rate / 100, FIN_LOAN_TERM);
+    const buffer = eq - pkg;                    // working capital when no loan is needed
+    const noLoanMax = eq - fixed - deposit;     // max traspaso price with no loan at this rent
 
-    const traspasoPrice = tra * FIN_SIZE;
-    const part2a = traspasoPrice + FIN_DD + FIN_TITULARITY;
-    const part2b = FIN_PART2B.reduce((s, x) => s + x[1], 0);
+    // --- Monthly running ---
+    const baseRun = FIN_RUNNING_BASE.reduce((s, x) => s + x[1], 0);
+    const monthly = rent + baseRun + (needsLoan ? a.pay : 0);
 
-    const ibi = Math.round(1600 * (price / 256000) / 12);
-    const runningTotal = ibi + FIN_RUNNING_BASE.reduce((s, x) => s + x[1], 0);
+    // --- Rent-to-buy: rent credited toward the purchase over a typical 3-year option (25-50% market practice) ---
+    const creditLow = 0.25 * 36 * rent;
+    const creditHigh = 0.50 * 36 * rent;
 
-    const l1P = price * 0.70;
-    const a1 = annuity(l1P, r1 / 100, 240);
-    const eq1 = price + itp + FIN_NOTARY - l1P;   // Day 1 cash at the notary
-    const step2Cost = refurbTotal + (bed ? FIN_BED_FEES : 0);
-    const l2Used = step2Cost + part2a;            // what Loan 2 actually funds
-    const l2P = Math.ceil(l2Used / 10000) * 10000; // requested, rounded up to 10k
-    const a2 = annuity(l2P, r2 / 100, 84);
-    const l2UsedB = step2Cost + part2b;
-    const l2P_B = Math.ceil(l2UsedB / 10000) * 10000;
-    const a2b = annuity(l2P_B, r2 / 100, 84);
-    const equityA = eq1;   // all out-of-pocket cash is at signing; steps 2-3 are loan-financed
-    const equityB = eq1;
-
-    const part1Rows = [
-      { k: "section", l: "Acquisition" },
-      { l: "Purchase price — " + FIN_SIZE + " m² × " + pre.toLocaleString("es-ES") + " €/m² (La Latina range 2,200-4,200)", a: fmtEur(price) },
-      { l: "ITP property transfer tax (6%, Comunidad de Madrid, private seller)", a: fmtEur(itp) },
-      { l: "Notary + property registry (escritura, inscripción)", a: fmtEur(FIN_NOTARY) },
-      ...(bed ? [{ l: "Compatibility-of-uses report + partial change of use (mixed-use variant)", a: fmtEur(FIN_BED_FEES) }] : []),
-      { k: "section", l: "Refurbishment — shell to dance studio" + (bed ? " with owner's dwelling corner" : "") },
-      ...works.map(x => ({ l: x[0], a: fmtEur(x[1]) })),
-      { k: "sub", l: "Works subtotal", a: fmtEur(refurbSub) },
-      { l: "Contingency (10% of works)", a: fmtEur(contingency) },
-      { k: "total", l: "Part 1 total — buying the premises, " + (bed ? "studio + bedroom ready" : "studio-ready"), a: fmtEur(part1) },
-      { l: "Own equity needed at signing — price + taxes + notary, minus Loan 1 (banks never finance the tax or fees)", a: fmtEur(eq1) },
-    ];
-    const part2aRows = [
-      { k: "section", l: "Option A — buying a traspaso (existing school)" },
-      { l: "Traspaso of a small academy — " + FIN_SIZE + " m² × " + tra.toLocaleString("es-ES") + " €/m² of venue", a: fmtEur(traspasoPrice) },
+    const day1Rows = [
+      { k: "section", l: "Day 1 — the traspaso package" },
+      { l: "Traspaso price — the running school (teachers, students, brand, licences, equipment)", a: fmtEur(tp) },
       { l: "Due diligence: lawyer, accounts and liabilities review", a: fmtEur(FIN_DD) },
       { l: "Licence change of ownership (Ayuntamiento) + gestoría", a: fmtEur(FIN_TITULARITY) },
-      { k: "total", l: "Part 2A total — business via traspaso", a: fmtEur(part2a) },
-      { l: "Own equity needed at this step — assumed fully covered by Loan 2", a: "0 €" },
-    ];
-    const part2bRows = [
-      { k: "section", l: "Option B — creating a new licence (own school)" },
-      ...FIN_PART2B.map(x => ({ l: x[0], a: fmtEur(x[1]) })),
-      { k: "total", l: "Part 2B total — business from scratch", a: fmtEur(part2b) },
-      { l: "Own equity needed at this step — assumed fully covered by a smaller Loan 2 (" + fmtEur(l2P_B) + ")", a: "0 €" },
-    ];
-    const runningRows = [
-      { k: "section", l: "Running costs (both options)" },
-      { l: "IBI property tax (approx. " + Math.round(1600 * price / 256000).toLocaleString("es-ES") + " €/year, scaled to the price)", a: ibi + " €/mo" },
-      ...FIN_RUNNING_BASE.map(x => ({ l: x[0], a: x[1] + " €/mo" })),
-      { k: "total", l: "Baseline running costs (excludes teacher pay — variable per class)", a: runningTotal + " €/mo" },
+      { l: "Refresh + rebrand of the acquired school (assumption)", a: fmtEur(FIN_REFRESH) },
+      { l: "Rental deposit (fianza — " + FIN_DEPOSIT_MONTHS + " months × " + fmtEur(rent) + ")", a: fmtEur(deposit) },
+      { k: "total", l: "Total needed on Day 1", a: fmtEur(pkg) },
+      { l: "Own equity available on Day 1", a: fmtEur(eq) },
+      { l: needsLoan ? "Gap financed by a commercial loan" : "Covered by your equity — no loan needed, " + fmtEur(buffer) + " left as working capital", a: needsLoan ? fmtEur(gap) : "" },
     ];
     const loanRows = [
-      { k: "section", l: "Loan 1 — commercial mortgage on the premises" },
-      { l: "Available from: traditional banks (Santander, BBVA, CaixaBank, Bankinter, Sabadell)", a: "" },
-      { l: "Amount: 70% of purchase price (typical 60-70% LTV on commercial premises)", a: fmtEur(l1P) },
-      { l: "Interest rate: " + r1.toFixed(1).replace(".", ",") + "% fixed · term: 20 years (240 months)", a: "" },
-      { l: "Monthly repayment", a: fmtEur(a1.pay) + "/mo" },
-      { l: "Total interest over the life of the loan", a: fmtEur(a1.interest) },
-      { k: "sub", l: "Total repaid", a: fmtEur(a1.total) },
-      { k: "section", l: "Loan 2 — business loan for refurbishment + traspaso" },
-      { l: "Available from: banks' SME lines (e.g. ICO-backed business loans, 50k-100k typical)", a: "" },
-      { l: "Amount requested (works + business, rounded up to 10k)", a: fmtEur(l2P) },
-      { k: "sub", l: "Actually used for the project — the rounding surplus stays as liquidity", a: fmtEur(l2Used) },
-      { l: "Interest rate: " + r2.toFixed(1).replace(".", ",") + "% · term: 7 years (84 months)", a: "" },
-      { l: "Monthly repayment", a: fmtEur(a2.pay) + "/mo" },
-      { l: "Total interest over the life of the loan", a: fmtEur(a2.interest) },
-      { k: "sub", l: "Total repaid", a: fmtEur(a2.total) },
-      { l: "With Option B (new licence) instead, Loan 2 shrinks to " + fmtEur(l2P_B) + " → " + fmtEur(a2b.pay) + "/mo", a: "" },
-      { k: "total", l: "Combined monthly debt service (Option A)", a: fmtEur(a1.pay + a2.pay) + "/mo" },
+      { k: "section", l: "Financing — own equity first, loan only for the gap" },
+      ...(needsLoan ? [
+        { l: "Commercial loan requested (gap rounded up to 1k — the surplus stays as liquidity)", a: fmtEur(loan) },
+        { l: "Where: banks' SME lines and ICO-backed business loans — get quotes from at least two banks", a: "" },
+        { l: "Anticipated interest: ~6.5-8.5% (ICO-backed can be lower) — your dial: " + rate.toFixed(1).replace(".", ",") + "%", a: "" },
+        { l: "Repayment time: typically 5-8 years — modelled at 7 years (" + FIN_LOAN_TERM + " months)", a: "" },
+        { l: "Monthly repayment", a: fmtEur(a.pay) + "/mo" },
+        { l: "Total interest over the life of the loan", a: fmtEur(a.interest) },
+        { k: "total", l: "Total repaid", a: fmtEur(a.total) },
+      ] : [
+        { l: "No loan required at this traspaso price — the whole package fits inside your equity", a: "" },
+        { l: "At this rent, traspasos up to " + fmtEur(noLoanMax) + " need no loan; above that, a commercial loan covers the gap", a: "" },
+        { l: "For reference: a 20.000 € SME loan at " + rate.toFixed(1).replace(".", ",") + "% over 7 years costs " + fmtEur(annuity(20000, rate / 100, FIN_LOAN_TERM).pay) + "/mo", a: "" },
+      ]),
+    ];
+    const runningRows = [
+      { k: "section", l: "Monthly running costs" },
+      { l: "Rent", a: fmtEur(rent) + "/mo" },
+      ...FIN_RUNNING_BASE.map(x => ({ l: x[0], a: x[1] + " €/mo" })),
+      ...(needsLoan ? [{ l: "Loan repayment", a: fmtEur(a.pay) + "/mo" }] : []),
+      { k: "total", l: "Monthly burn (excludes teacher pay — variable per class)", a: fmtEur(monthly) + "/mo" },
+      { l: "In a rent-to-buy, part of the rent is credited to the future purchase — see below", a: "" },
+    ];
+    const rtbRows = [
+      { k: "section", l: "Rent-to-buy (alquiler con opción a compra) — how it's usually carried out" },
+      { l: "Two documents with the landlord: the lease of the local (arrendamiento) and a purchase option (opción de compra), signed together and cross-referenced", a: "" },
+      { l: "Option premium (prima): an upfront payment for the right to buy — commonly 1-3 months' rent or 2-5% of the price; negotiate that it counts toward the price", a: "" },
+      { l: "Rent credit: commonly 25-50% of the monthly rent is credited to the purchase price if the option is exercised — usually only when the rent is paid on time", a: "" },
+      { l: "At your " + fmtEur(rent) + "/mo rent, credited over a typical 3-year option", a: fmtEur(creditLow) + " — " + fmtEur(creditHigh) },
+      { l: "Exercise window: typically 1-5 years, with the purchase price fixed at signing (or by valuation at exercise)", a: "" },
+      { l: "Protection: register the option in the Registro de la Propiedad so it binds the landlord and any future buyer of the building", a: "" },
+      { l: "If you don't exercise: the premium and the credited rent are usually forfeited", a: "" },
+      { l: "Tax: rent carries 21% IVA (deductible if you register for IVA); exercising the purchase is taxed as any purchase — ITP (6% Comunidad de Madrid) if the landlord is a private seller", a: "" },
+      { k: "sub", l: "Negotiate the option together with the traspaso, before paying the goodwill — the school's value lives in this venue", a: "" },
     ];
     const summaryRows = [
-      { k: "section", l: "Summary (live)" },
-      { l: "Total project cost — premises + traspaso (Option A)", a: fmtEur(part1 + part2a) },
-      { l: "Total project cost — premises + new licence (Option B)", a: fmtEur(part1 + part2b) },
-      { l: "Own equity needed — Day 1 cash at signing (both options)", a: fmtEur(eq1) },
-      { l: "Option B requests a smaller Loan 2 (lower monthly, same Day-1 equity)", a: fmtEur(l2P_B) },
-      ...(bed ? [{ l: "Mixed-use variant: the dwelling corner adds " + fmtEur(FIN_BED_FEES + FIN_BED_WORKS.reduce((s, x) => s + x[1], 0) * 1.10) + " incl. contingency — Urbanismo approval required (see Legal & Regulatory)", a: "" }] : []),
-      { l: "Loan 2 fully repaid at year 7; Loan 1 at year 20", a: "" },
-      { l: price <= 500000 ? "Premises purchase price — under the 500,000 € budget cap" : "Premises purchase price — OVER the 500,000 € budget cap", a: fmtEur(price) },
+      { k: "section", l: "Summary" },
+      { l: "Anchor: own equity available on Day 1", a: fmtEur(eq) },
+      { l: "Traspaso package on Day 1", a: fmtEur(pkg) },
+      { l: needsLoan ? "Loan needed: " + fmtEur(loan) + " → " + fmtEur(a.pay) + "/mo for 7 years" : "No loan needed — " + fmtEur(buffer) + " of working capital left", a: "" },
+      { l: "Monthly burn while operating", a: fmtEur(monthly) + "/mo" },
+      { l: "Rent credited toward the future purchase over a 3-year option (25-50%)", a: fmtEur(creditLow) + " — " + fmtEur(creditHigh) },
+      { l: "Before signing: lawyer review, and the option registered in the Registro de la Propiedad", a: "" },
     ];
 
-    const projectA = part1 + part2a;
     const goParts = [
-      ["Premises", price, "#8a6a56"],
-      ["Taxes + notary", itp + FIN_NOTARY, "#b0705f"],
-      ["Works" + (bed ? " + bedroom" : ""), refurbTotal + (bed ? FIN_BED_FEES : 0), "#c29860"],
-      ["Business (traspaso)", part2a, "#7b5aa7"],
+      ["Traspaso", tp, "#7b5aa7"],
+      ["DD + licence + rebrand", fixed, "#a78bba"],
+      ["Rental deposit", deposit, "#8a6a56"],
     ];
     const fromParts = [
-      ["Loan 1 — mortgage", l1P, "#7b5aa7"],
-      ["Loan 2 — SME/ICO", l2Used, "#a78bba"],
-      ["Own equity (Day 1)", equityA, "#8a6a56"],
+      ["Own equity", needsLoan ? pkg - loan : pkg, "#8a6a56"],
+      ...(needsLoan ? [["Commercial loan", loan, "#7b5aa7"]] : []),
     ];
-    const step1Cost = price + itp + FIN_NOTARY;
+    const anchorBox = `<div class="reco"><strong>With ${fmtEur(eq)} on Day 1:</strong> after fixed costs (${fmtEur(fixed)}) and the ${fmtEur(deposit)} deposit, traspasos up to <strong>${fmtEur(noLoanMax)}</strong> are fully funded by your own equity` +
+      (needsLoan
+        ? ` — at ${fmtEur(tp)} you need a <strong>${fmtEur(loan)} commercial loan</strong> at ${rate.toFixed(1).replace(".", ",")}% → <strong>${fmtEur(a.pay)}/mo</strong> for 7 years.`
+        : ` — at ${fmtEur(tp)} you are inside it, with <strong>${fmtEur(buffer)}</strong> of working capital to spare.`) +
+      ` The school earns from month one at ${fmtEur(monthly)}/mo of burn.</div>`;
 
     document.getElementById("fin-body").innerHTML = `
-      <div class="subact">The project at a glance (Option A — traspaso)</div>
-      <div class="xbar-label">Where the money goes — ${fmtEur(projectA)}</div>
-      ${stackBar(projectA, goParts)}
+      <div class="subact">The anchor — everything cascades from your equity</div>
+      ${anchorBox}
+      <div class="xbar-label">Where the Day-1 ${fmtEur(pkg)} goes</div>
+      ${stackBar(pkg, goParts)}
       ${legendHTML(goParts)}
-      <div class="xbar-label">Where the money comes from</div>
-      ${stackBar(projectA, fromParts)}
+      <div class="xbar-label">Where it comes from</div>
+      ${stackBar(pkg, fromParts)}
       ${legendHTML(fromParts)}
-      <div class="subact">Own equity — step by step</div>
-      <div class="steps">
-        <div class="step">
-          <div class="step-title">Step 1 · Buy the premises</div>
-          <div class="step-line">Cost at the notary: <strong>${fmtEur(step1Cost)}</strong></div>
-          <div class="step-line">Loan 1 (70% mortgage): <strong>${fmtEur(l1P)}</strong></div>
-          <div class="step-eq">${fmtEur(eq1)} <small>equity at signing — price, taxes and notary minus the mortgage</small></div>
-          ${stackBar(step1Cost, [["Loan 1", l1P, "#7b5aa7"], ["Equity", eq1, "#8a6a56"]])}
-        </div>
-        <div class="step">
-          <div class="step-title">Step 2 · Refurbish${bed ? " + bedroom" : ""}</div>
-          <div class="step-line">Works${bed ? " + mixed-use fees" : ""}: <strong>${fmtEur(step2Cost)}</strong></div>
-          <div class="step-line">Funded by Loan 2 (SME/ICO)</div>
-          <div class="step-eq">0 € <small>equity at this step — assumed fully loan-financed</small></div>
-          ${stackBar(step2Cost, [["Loan 2", step2Cost, "#a78bba"]])}
-        </div>
-        <div class="step">
-          <div class="step-title">Step 3 · Set up the business</div>
-          <div class="step-line">Option A — traspaso: <strong>${fmtEur(part2a)}</strong></div>
-          <div class="step-line">Option B — new licence: <strong>${fmtEur(part2b)}</strong> (Loan 2 shrinks to ${fmtEur(l2P_B)})</div>
-          <div class="step-eq">0 € <small>equity at this step — assumed fully loan-financed</small></div>
-          ${stackBar(Math.max(part2a, part2b), [["Traspaso (A)", part2a, "#7b5aa7"], ["New licence (B)", part2b, "#a78bba"]])}
-        </div>
-      </div>
-      <p class="fin-note">All your equity is concentrated at Step 1: banks finance 70% of the purchase price, but never the ITP tax or notary fees. Steps 2-3 assume Loan 2 covers them in full — if your bank only finances part of an SME project, add the difference to your equity. Loan 2's 10k rounding gives a small buffer already.</p>
-      <div class="subact">Part 1 — Buying the premises</div>${finTable(part1Rows)}
-      <div class="subact">Part 2A — Buying a traspaso</div>${finTable(part2aRows)}
-      <div class="subact">Part 2B — Creating a new licence</div>${finTable(part2bRows)}
-      <div class="subact">Running costs</div>${finTable(runningRows)}
-      <p class="fin-note">Teacher pay is excluded: freelance teachers in Madrid charge per class, so it scales with the timetable you run.${bed ? " Mixed use: insurance must be split (home + business) and IBI will be recalculated after the change of use." : ""}</p>
-      <div class="subact">Financing — two separate loans</div>${finTable(loanRows)}
-      <div class="subact">Best loan routes — how to finance each part</div>${finTable(LOAN_ROUTES)}
+      <div class="subact">Day 1 — the traspaso package</div>${finTable(day1Rows)}
+      <div class="subact">Financing — loan only if needed</div>${finTable(loanRows)}
+      <div class="subact">Monthly running costs</div>${finTable(runningRows)}
+      <div class="subact">Rent-to-buy — how it's usually carried out</div>${finTable(rtbRows)}
       <div class="subact">Summary</div>${finTable(summaryRows)}
-      <p class="fin-note">Indicative estimates (2026-11-02) for framing and negotiation, not quotes. Get formal offers: mortgage quotes from at least two banks, plus an ICO-backed SME loan quote. For the mixed-use variant, make any purchase offer conditional on an architect's compatibility report and Urbanismo viability.</p>`;
+      <p class="fin-note">Assumptions: deposit (${FIN_DEPOSIT_MONTHS} months of rent), refresh (4,000 €), the loan term (7 years) and the rent-credit range (25-50% over a 3-year option) reflect typical market practice — they are planning assumptions, not rules. Indicative estimates (2026-11-03) for framing and negotiation, not quotes. Get formal offers from at least two banks before signing anything.</p>`;
   }
 
   // --- Venue explorer: neighborhood prices, platforms ---
@@ -1021,7 +990,7 @@
       <div class="pills" id="nb-pills"></div>
       <div class="xp-inputs">
         <label>Studio size: <input type="range" id="xp-size" min="60" max="400" step="5" value="130"> <span id="xp-size-val">130 m²</span></label>
-        <label>Premises budget: <input type="number" id="xp-budget" min="50000" step="10000" value="500000"> €</label>
+        <label>Premises budget (option exercise price): <input type="number" id="xp-budget" min="50000" step="10000" value="500000"> €</label>
       </div>
       <div id="xp-results"></div>
       <div style="margin: 1.5rem 0 0.6rem;">
